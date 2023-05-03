@@ -1,15 +1,16 @@
-$shaded6: rgba(0,0,0,.6);
-$shaded2: rgba(0,0,0,.2);
-$highlighted6: rgba(255,255,255, 0.6);
-$highlighted2: rgba(255,255,255, 0.2);
-$bg-color: rgba(28, 40, 51, 1);
+.App {
+  --shaded6: rgba(0, 0, 0, 0.6);
+  --shaded2: rgba(0, 0, 0, 0.2);
+  --highlighted6: rgba(255, 255, 255, 0.6);
+  --highlighted4: rgba(255, 255, 255, 0.4);
+  --highlighted2: rgba(255, 255, 255, 0.2);
+  --bg-color: rgba(28, 40, 51, 1);
 
-.App{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: $bg-color;
+  background-color: var(--bg)-color;
   height: 100vh;
   width: 100vw;
   padding-top: 16px;
@@ -17,65 +18,68 @@ $bg-color: rgba(28, 40, 51, 1);
   color: white;
 }
 
-#time-log-form{
+#time-log-form {
   max-width: 640px;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: $bg-color;
-  // border-radius: 8px;
+  background-color: var(--bg-color);
+  border-radius: 8px;
 }
 
-#hours-selector{
+#hours-selector {
   display: flex;
   flex-direction: row;
 }
 
-.FormWrapper{
+.FormWrapper {
   padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 }
 
-.form-select{
-  background-color: $shaded2;
-  border-color: $highlighted6;
+.form-select {
+  background-color: var(--shaded2);
+  border-color: var(--highlighted6);
   color: white;
 }
 
-.TimeSelector{
-  background-color: $shaded6;
+.TimeSelector {
+  background-color: var(--shaded6);
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   height: 298px;
 }
 
-.TimeSwipe{
+.TimeSwipe {
   height: 100%;
   width: 100%;
   text-align: center;
 }
 
-h3{
+h3 {
   font-size: 20px;
   margin-bottom: 8px;
   margin-top: 24px;
 }
 
-select, .Submit{
-  background-color: $shaded2;
+select,
+.Submit {
+  background-color: var(--shaded2);
   color: white;
   border-radius: 8px;
+  border: 1px solid var(--highlighted4);
   padding: 4px 12px;
   box-sizing: border-box;
   width: 100%;
+  font-size: 16px;
 }
 
-.Form{
+.Form {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -87,14 +91,14 @@ select, .Submit{
   box-sizing: border-box;
 }
 
-.Hours{
+.Hours {
   display: flex;
   flex-direction: row;
   gap: 24px;
 }
 
-.Submit{
-  background-color: $shaded6;
+.Submit {
+  background-color: var(--shaded6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,22 +106,23 @@ select, .Submit{
   font-weight: bold;
   margin-top: 24px;
   cursor: pointer;
-  box-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
   user-select: none;
+  border: none;
 }
 
-.Submit:active{
-  box-shadow: 0px 0px 0px rgba(0,0,0,0);
+.Submit:active {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
 }
 
-.Submit.Disabled{
-  box-shadow: 0px 0px 0px rgba(0,0,0,0);
-  background-color: $highlighted2;
+.Disabled {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  background-color: var(--highlighted2);
   cursor: default;
 }
 
-.Submit.Success{
-  box-shadow: 0px 0px 0px rgba(0,0,0,0);
+.Success {
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
   cursor: default;
   animation: successTimer 5000ms;
 }
@@ -129,10 +134,24 @@ select, .Submit{
   }
   /* You could think of as "step 2" */
   100% {
-    background: $highlighted2;
+    background: var(--highlighted2);
   }
 }
 
-a{
-  color:aqua;
+a {
+  color: aqua;
+}
+
+.DateSelector {
+  background-color: var(--shaded2);
+  color: white;
+  border-radius: 8px;
+  border: 1px solid var(--highlighted4);
+  padding: 4px 16px;
+  margin-top: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  box-shadow: none;
 }
