@@ -23,6 +23,7 @@ function App() {
 
   const { user, signOut } = UserAuth();
   const navigate = useNavigate();
+  if (!user) navigate("/login");
   const handleSignOut = async () => {
     try {
       await signOut();

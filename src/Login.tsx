@@ -80,7 +80,8 @@ const Login = ({ ...props }: LoginProps) => {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const navigate = useNavigate();
-  const { signIn } = UserAuth();
+  const { user, signIn } = UserAuth();
+  if (!!user) navigate("/");
 
   const onSubmit = async (e: any) => {
     // e.preventDefault();
