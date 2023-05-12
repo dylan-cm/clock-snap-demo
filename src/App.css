@@ -155,3 +155,11 @@ a {
   font-size: 16px;
   box-shadow: none;
 }
+
+.SignOut {
+  margin: 12px;
+  box-sizing: border-box;
+  text-decoration: underline;
+  cursor: pointer;
+  user-select: none;
+}

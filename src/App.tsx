@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import db from "./firebase";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "./firebase";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { UserAuth } from "./firebase";
+import { useNavigate } from "react-router-dom";
 import "./App.css";
 
 function App() {
   const [date, setDate] = useState(new Date());
   const [hour, setHour] = useState(0);
   const [fraction, setFraction] = useState(0);
-  const [person, setPerson] = useState<
-    { name: string; id: string } | undefined
-  >();
+  const [userName, setUserName] = useState("");
   const [project, setProject] = useState<
     { name: string; id: string } | undefined
   >();
@@ -17,22 +17,34 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const [peopleOptions, setPeopleOptions] = useState<
-    Array<{ name: string; id: string }>
-  >([]);
   const [projectOptions, setProjectOptions] = useState<
     Array<{ name: string; id: string }>
   >([]);
 
+  const { user, signOut } = UserAuth();
+  const navigate = useNavigate();
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate("/login");
+      console.log("You are logged out");
+    } catch (e: any) {
+      console.log(e.message);
+    }
+  };
+
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const peopleCollection = collection(db, "people");
-        const peopleSnapshot = await getDocs(peopleCollection);
-        const people = peopleSnapshot.docs.map((doc) => ({
-          name: doc.data().name,
-          id: doc.id,
-        }));
+        const userDocRef = doc(db, "people", user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          setUserName(userDocSnap.data().name);
+        } else {
+          // docSnap.data() will be undefined in this case
+          console.log("No such document!");
+        }
         const projectsCollection = collection(db, "projects");
         const projectsSnapshot = await getDocs(projectsCollection);
         const projects = projectsSnapshot.docs.map((doc) => ({
@@ -40,7 +52,6 @@ function App() {
           id: doc.id,
         }));
 
-        setPeopleOptions(people);
         setProjectOptions(projects);
       } catch (error: any) {
         console.log("Error: ", error.toString());
@@ -55,8 +66,7 @@ function App() {
   const hourOptions = Array.from({ length: 24 }, (_, i) => i);
   const fractionOptions = [0, 0.25, 0.5, 0.75];
 
-  let formComplete =
-    (hour || fraction) && person && project && !success && !loading;
+  let formComplete = (hour || fraction) && project && !success && !loading;
   let submitButtonLabel = "Log Hours";
   if (loading) submitButtonLabel = "Logging Hours...";
   if (err) submitButtonLabel = "Try Again";
@@ -80,7 +90,7 @@ function App() {
         hour: hour,
         fraction: fraction,
         date: date,
-        person: person,
+        name: userName,
         project: project,
       });
       setLoading(false);
@@ -90,7 +100,6 @@ function App() {
         setSuccess(false);
         setHour(0);
         setFraction(0);
-        setPerson(undefined);
         setProject(undefined);
       }, 5000);
     } catch (error: any) {
@@ -101,12 +110,6 @@ function App() {
     }
   };
 
-  const handlePersonChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedPerson = peopleOptions.find(
-      (option) => option.id === event.target.value
-    );
-    setPerson(selectedPerson || undefined);
-  };
   const handleProjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedProject = projectOptions.find(
       (option) => option.id === event.target.value
@@ -117,6 +120,7 @@ function App() {
   return (
     <div className="App">
       <h1>ClockSnap</h1>
+      <h2>{userName}</h2>
       <div className="Form">
         <h3>Hours</h3>
         <div className="Hours">
@@ -143,17 +147,7 @@ function App() {
           onChange={(e) => setDate(new Date(e.target.value))}
           value={date ? date.toISOString().split("T")[0] : ""}
         />
-        <h3>Team Member</h3>
-        <select value={person?.id || ""} onChange={handlePersonChange}>
-          <option value="" disabled>
-            Select a person
-          </option>
-          {peopleOptions.map(({ name, id }) => (
-            <option key={id} value={id}>
-              {name}
-            </option>
-          ))}
-        </select>
+
         <h3>Project</h3>
         <select value={project?.id || ""} onChange={handleProjectChange}>
           <option value="" disabled>
@@ -184,6 +178,9 @@ function App() {
           <></>
         )}
       </div>
+      <span className="SignOut" onClick={() => handleSignOut()}>
+        Sign Out
+      </span>
     </div>
   );
 }
