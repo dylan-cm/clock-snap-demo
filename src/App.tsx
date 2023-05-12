@@ -89,7 +89,7 @@ function App() {
         hour: hour,
         fraction: fraction,
         date: date,
-        name: userName,
+        userName: userName,
         project: project,
       });
       setLoading(false);
