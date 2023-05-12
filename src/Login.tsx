@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import "./Login.css";
 import { AriaTextFieldProps, AriaButtonProps } from "react-aria";
 import { useTextField, useButton } from "react-aria";
-import { UserAuth, auth, signIn } from "./firebase";
+import { UserAuth } from "./firebase";
 import { useNavigate } from "react-router-dom";
 
 interface LoginProps {}

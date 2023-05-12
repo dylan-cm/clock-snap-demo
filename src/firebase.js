@@ -18,8 +18,7 @@ const app = initializeApp({
   measurementId: "G-N9KXHDQ9G3",
 });
 export const db = getFirestore(app);
-export const auth = getAuth(app);
-export const signIn = signInWithEmailAndPassword;
+const auth = getAuth(app);
 
 const UserContext = createContext();
 
@@ -50,20 +49,5 @@ export const AuthContextProvider = ({ children }) => {
 export const UserAuth = () => {
   return useContext(UserContext);
 };
-
-// export const login = (email, password) => {
-//   signInWithEmailAndPassword(auth, email, password)
-//     .then((userCredential) => {
-//       // Signed in
-//       const user = userCredential.user;
-//       console.log(user);
-//     })
-//     .catch((error) => {
-//       const errorCode = error.code;
-//       const errorMessage = error.message;
-//       console.log(errorCode, errorMessage);
-//       // setErr(`${errorCode}: ${errorMessage}`);
-//     });
-// };
 
 export default app;

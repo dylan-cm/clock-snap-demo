@@ -42,7 +42,6 @@ function App() {
         if (userDocSnap.exists()) {
           setUserName(userDocSnap.data().name);
         } else {
-          // docSnap.data() will be undefined in this case
           console.log("No such document!");
         }
         const projectsCollection = collection(db, "projects");
