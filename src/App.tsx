@@ -4,12 +4,58 @@ import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { UserAuth } from "./firebase";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
+import { AriaTextFieldProps, useTextField } from "react-aria";
+
+function TextArea(props: AriaTextFieldProps) {
+  let { label } = props;
+  let ref = React.useRef(null);
+  let { labelProps, inputProps } = useTextField(
+    {
+      ...props,
+      inputElementType: "textarea",
+    },
+    ref
+  );
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        minHeight: 200,
+      }}
+    >
+      <label
+        style={{ fontSize: 20, margin: "24px 0px 8px 0px", fontWeight: "bold" }}
+        {...labelProps}
+      >
+        {label}
+      </label>
+      <textarea
+        style={{
+          background: "transparent",
+          color: "white",
+          borderRadius: 8,
+          padding: 12,
+          fontSize: 14,
+          fontFamily: "sans-serif",
+          boxSizing: "border-box",
+          width: "100%",
+        }}
+        {...inputProps}
+        ref={ref}
+      />
+    </div>
+  );
+}
 
 function App() {
   const [date, setDate] = useState(new Date());
   const [hour, setHour] = useState(0);
   const [fraction, setFraction] = useState(0);
   const [userName, setUserName] = useState("");
+  const [note, setNote] = useState("");
   const [project, setProject] = useState<
     { name: string; id: string } | undefined
   >();
@@ -87,11 +133,12 @@ function App() {
     //send to firestore
     try {
       await addDoc(collection(db, "timeLog"), {
-        hour: hour,
-        fraction: fraction,
-        date: date,
-        userName: userName,
-        project: project,
+        hour,
+        fraction,
+        date,
+        userName,
+        project,
+        note,
       });
       setLoading(false);
       setErr("");
@@ -101,6 +148,7 @@ function App() {
         setHour(0);
         setFraction(0);
         setProject(undefined);
+        setNote("");
       }, 5000);
     } catch (error: any) {
       console.log("Error: ", error.toString());
@@ -159,6 +207,11 @@ function App() {
             </option>
           ))}
         </select>
+        <TextArea
+          value={note}
+          label="Note"
+          onChange={(value) => setNote(value)}
+        />
         <div className={submitClass} onClick={() => submitForm()}>
           {submitButtonLabel}
         </div>

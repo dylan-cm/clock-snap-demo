@@ -27,11 +27,13 @@
   align-items: stretch;
   background-color: var(--bg-color);
   border-radius: 8px;
+  box-sizing: border-box;
 }
 
 #hours-selector {
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
 }
 
 .FormWrapper {
@@ -45,6 +47,7 @@
   background-color: var(--shaded2);
   border-color: var(--highlighted6);
   color: white;
+  box-sizing: border-box;
 }
 
 .TimeSelector {
@@ -53,18 +56,21 @@
   flex-direction: row;
   justify-content: space-around;
   height: 298px;
+  box-sizing: border-box;
 }
 
 .TimeSwipe {
   height: 100%;
   width: 100%;
   text-align: center;
+  box-sizing: border-box;
 }
 
 h3 {
   font-size: 20px;
   margin-bottom: 8px;
   margin-top: 24px;
+  box-sizing: border-box;
 }
 
 select,
@@ -95,6 +101,7 @@ select,
   display: flex;
   flex-direction: row;
   gap: 24px;
+  box-sizing: border-box;
 }
 
 .Submit {
@@ -109,6 +116,7 @@ select,
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
   user-select: none;
   border: none;
+  box-sizing: border-box;
 }
 
 .Submit:active {
@@ -154,6 +162,7 @@ a {
   text-align: center;
   font-size: 16px;
   box-shadow: none;
+  box-sizing: border-box;
 }
 
 .SignOut {
@@ -162,4 +171,5 @@ a {
   text-decoration: underline;
   cursor: pointer;
   user-select: none;
+  box-sizing: border-box;
 }

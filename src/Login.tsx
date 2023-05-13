@@ -14,18 +14,32 @@ function TextField(props: AriaTextFieldProps) {
     useTextField(props, ref);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: 200 }}>
-      <label {...labelProps} style={{ color: "white" }}>
+    <form style={{ display: "flex", flexDirection: "column", width: 200 }}>
+      <label
+        {...labelProps}
+        style={{
+          color: "white",
+          margin: "24px 0px 8px 0px",
+          fontWeight: "bold",
+          fontSize: 20,
+        }}
+        htmlFor={String(label).toLowerCase()}
+      >
         {label}
       </label>
       <input
         {...inputProps}
         ref={ref}
         style={{
+          background: "transparent",
+          color: "white",
+          borderRadius: 8,
+          padding: 12,
           fontSize: 14,
-          padding: 4,
-          borderRadius: 4,
+          fontFamily: "sans-serif",
           boxSizing: "border-box",
+          width: "100%",
+          border: "1px solid rgba(255, 255, 255, 0.4)",
         }}
       />
       {props.description && (
@@ -38,7 +52,7 @@ function TextField(props: AriaTextFieldProps) {
           {props.errorMessage}
         </div>
       )}
-    </div>
+    </form>
   );
 }
 
@@ -54,22 +68,7 @@ function Button(props: AriaButtonProps) {
   );
 
   return (
-    <span
-      {...buttonProps}
-      style={{
-        background: isPressed ? "lightgrey" : "white",
-        color: "black",
-        padding: 8,
-        width: 200,
-        boxSizing: "border-box",
-        textAlign: "center",
-        borderRadius: 4,
-        cursor: "pointer",
-        userSelect: "none",
-        WebkitUserSelect: "none",
-      }}
-      ref={ref}
-    >
+    <span className="SignIn" {...buttonProps} ref={ref}>
       {children}
     </span>
   );
@@ -100,6 +99,11 @@ const Login = ({ ...props }: LoginProps) => {
       <TextField
         label="Email"
         type="email"
+        name="email"
+        id="email"
+        autoComplete="username"
+        aria-autocomplete="both"
+        autoFocus
         value={email}
         onChange={(val) => setEmail(val)}
       />
@@ -109,8 +113,10 @@ const Login = ({ ...props }: LoginProps) => {
         value={password}
         onChange={(val) => setPassword(val)}
         errorMessage={err}
+        name="password"
       />
       <Button onPress={(e) => onSubmit(e)}>Submit</Button>
+      <p style={{ fontSize: 8, marginTop: 12, color: "white" }}>v0.1.2</p>
     </div>
   );
 };
