@@ -83,20 +83,20 @@ function App() {
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const userDocRef = doc(db, "people", user.uid);
-        const userDocSnap = await getDoc(userDocRef);
-
-        if (userDocSnap.exists()) {
-          setUserName(userDocSnap.data().name);
+        const userDoc = await getDoc(doc(db, "people", user.uid));
+        if (userDoc.exists()) {
+          setUserName(userDoc.data().name);
         } else {
           console.log("No such document!");
         }
         const projectsCollection = collection(db, "projects");
         const projectsSnapshot = await getDocs(projectsCollection);
-        const projects = projectsSnapshot.docs.map((doc) => ({
-          name: doc.data().name,
-          id: doc.id,
-        }));
+        const projects = projectsSnapshot.docs.map((doc) => {
+          return {
+            name: doc.data().name,
+            id: doc.id,
+          };
+        });
 
         setProjectOptions(projects);
       } catch (error: any) {
@@ -106,8 +106,10 @@ function App() {
       }
     };
 
-    fetchOptions();
-  }, []);
+    if (user.uid) {
+      fetchOptions();
+    }
+  }, [user]);
 
   const hourOptions = Array.from({ length: 24 }, (_, i) => i);
   const fractionOptions = [0, 0.25, 0.5, 0.75];

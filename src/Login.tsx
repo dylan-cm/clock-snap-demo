@@ -116,7 +116,7 @@ const Login = ({ ...props }: LoginProps) => {
         name="password"
       />
       <Button onPress={(e) => onSubmit(e)}>Submit</Button>
-      <p style={{ fontSize: 8, marginTop: 12, color: "white" }}>v0.1.2</p>
+      <p style={{ fontSize: 8, marginTop: 12, color: "white" }}>v0.1.3</p>
     </div>
   );
 };
