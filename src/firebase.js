@@ -1,3 +1,5 @@
+import { createContext, useContext, useEffect, useState } from "react";
+
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -6,7 +8,6 @@ import {
   signOut as FBSignOut,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { createContext, useContext, useEffect, useState } from "react";
 
 const app = initializeApp({
   apiKey: "AIzaSyCVfk4iCSTcXsR2FJQ43iqNZc10coIo_yg",

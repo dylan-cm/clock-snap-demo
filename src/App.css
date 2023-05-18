@@ -66,7 +66,8 @@
   box-sizing: border-box;
 }
 
-h3 {
+h3,
+label {
   font-size: 20px;
   margin-bottom: 8px;
   margin-top: 24px;
@@ -172,4 +173,30 @@ a {
   cursor: pointer;
   user-select: none;
   box-sizing: border-box;
+}
+
+input.Number {
+  background-color: var(--shaded2);
+  color: white;
+  border-radius: 8px;
+  border: 1px solid var(--highlighted4);
+  padding: 4px 16px;
+  margin-top: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+.NumberRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.Checkbox {
+  margin-left: 24px;
 }

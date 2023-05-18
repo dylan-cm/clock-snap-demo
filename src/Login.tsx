@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Login.css";
 import { AriaTextFieldProps, AriaButtonProps } from "react-aria";
 import { useTextField, useButton } from "react-aria";
@@ -80,7 +80,10 @@ const Login = ({ ...props }: LoginProps) => {
   const [err, setErr] = useState("");
   const navigate = useNavigate();
   const { user, signIn } = UserAuth();
-  if (!!user) navigate("/");
+
+  useEffect(() => {
+    if (!!user) navigate("/");
+  }, [user, navigate]);
 
   const onSubmit = async (e: any) => {
     // e.preventDefault();
@@ -116,7 +119,7 @@ const Login = ({ ...props }: LoginProps) => {
         name="password"
       />
       <Button onPress={(e) => onSubmit(e)}>Submit</Button>
-      <p style={{ fontSize: 8, marginTop: 12, color: "white" }}>v0.1.3</p>
+      <p style={{ fontSize: 8, marginTop: 12, color: "white" }}>v0.1.4</p>
     </div>
   );
 };

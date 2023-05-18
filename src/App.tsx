@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { db } from "./firebase";
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { UserAuth } from "./firebase";
 import { useNavigate } from "react-router-dom";
-import "./App.css";
+import { db, UserAuth } from "./firebase";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { AriaTextFieldProps, useTextField } from "react-aria";
+import "./App.css";
 
 function TextArea(props: AriaTextFieldProps) {
   let { label } = props;
@@ -54,6 +53,9 @@ function App() {
   const [date, setDate] = useState(new Date());
   const [hour, setHour] = useState(0);
   const [fraction, setFraction] = useState(0);
+  const [mileage, setMileage] = useState(0);
+  const [parking, setParking] = useState(0);
+  const [drafting, setDrafting] = useState(false);
   const [userName, setUserName] = useState("");
   const [note, setNote] = useState("");
   const [project, setProject] = useState<
@@ -69,18 +71,19 @@ function App() {
 
   const { user, signOut } = UserAuth();
   const navigate = useNavigate();
-  if (!user) navigate("/login");
+
   const handleSignOut = async () => {
     try {
       await signOut();
-      navigate("/login");
       console.log("You are logged out");
+      navigate("/login");
     } catch (e: any) {
       console.log(e.message);
     }
   };
 
   useEffect(() => {
+    if (!user) navigate("/login");
     const fetchOptions = async () => {
       try {
         const userDoc = await getDoc(doc(db, "people", user.uid));
@@ -106,10 +109,10 @@ function App() {
       }
     };
 
-    if (user.uid) {
+    if (user?.uid) {
       fetchOptions();
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const hourOptions = Array.from({ length: 24 }, (_, i) => i);
   const fractionOptions = [0, 0.25, 0.5, 0.75];
@@ -141,6 +144,9 @@ function App() {
         userName,
         project,
         note,
+        drafting,
+        mileage,
+        parking,
       });
       setLoading(false);
       setErr("");
@@ -151,6 +157,9 @@ function App() {
         setFraction(0);
         setProject(undefined);
         setNote("");
+        setDrafting(false);
+        setMileage(0);
+        setParking(0);
       }, 5000);
     } catch (error: any) {
       console.log("Error: ", error.toString());
@@ -209,6 +218,35 @@ function App() {
             </option>
           ))}
         </select>
+        <label>
+          Drafting:
+          <input
+            className="Checkbox"
+            type="checkbox"
+            checked={drafting}
+            onChange={() => setDrafting(!drafting)}
+          />
+        </label>
+        <div className="NumberRow">
+          <label>
+            Mileage
+            <input
+              className="Number"
+              type="number"
+              value={mileage}
+              onChange={(e) => setMileage(Number(e.target.value))}
+            />
+          </label>
+          <label>
+            Parking
+            <input
+              className="Number"
+              type="number"
+              value={parking.toString()}
+              onChange={(e) => setParking(Number(e.target.value))}
+            />
+          </label>
+        </div>
         <TextArea
           value={note}
           label="Note"
