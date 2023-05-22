@@ -52,10 +52,12 @@ function TextArea(props: AriaTextFieldProps) {
 function App() {
   const [date, setDate] = useState(new Date());
   const [hour, setHour] = useState(0);
-  const [fraction, setFraction] = useState(0);
+  const [minute, setMinute] = useState(0);
+  const [time, setTime] = useState(0);
   const [mileage, setMileage] = useState(0);
   const [parking, setParking] = useState(0);
   const [drafting, setDrafting] = useState(false);
+  const [designAssistant, setDesignAssistant] = useState(false);
   const [userName, setUserName] = useState("");
   const [note, setNote] = useState("");
   const [project, setProject] = useState<
@@ -114,14 +116,12 @@ function App() {
     }
   }, [user, navigate]);
 
-  const hourOptions = Array.from({ length: 24 }, (_, i) => i);
-  const fractionOptions = [0, 0.25, 0.5, 0.75];
-
-  let formComplete = (hour || fraction) && project && !success && !loading;
-  let submitButtonLabel = "Log Hours";
-  if (loading) submitButtonLabel = "Logging Hours...";
+  let formComplete =
+    time > 0 && project && !success && !loading && mileage >= 0 && parking >= 0;
+  let submitButtonLabel = "Log Time";
+  if (loading) submitButtonLabel = "Logging Time...";
   if (err) submitButtonLabel = "Try Again";
-  if (success) submitButtonLabel = "Logged Hours ✓";
+  if (success) submitButtonLabel = "Logged Time ✓";
 
   let submitClass = "Submit";
   if (success) {
@@ -139,7 +139,8 @@ function App() {
     try {
       await addDoc(collection(db, "timeLog"), {
         hour,
-        fraction,
+        minute,
+        time,
         date,
         userName,
         project,
@@ -147,6 +148,7 @@ function App() {
         drafting,
         mileage,
         parking,
+        designAssistant,
       });
       setLoading(false);
       setErr("");
@@ -154,10 +156,11 @@ function App() {
       setTimeout(() => {
         setSuccess(false);
         setHour(0);
-        setFraction(0);
+        setMinute(0);
         setProject(undefined);
         setNote("");
         setDrafting(false);
+        setDesignAssistant(false);
         setMileage(0);
         setParking(0);
       }, 5000);
@@ -176,65 +179,129 @@ function App() {
     setProject(selectedProject || undefined);
   };
 
+  const handleMileage = (val: string) => {
+    const mileageVal = Number(val);
+    if (mileageVal < 0) {
+      setMileage(0);
+      return;
+    }
+    setMileage(mileageVal);
+  };
+
+  const handleParking = (val: string) => {
+    const parkingVal = Number(val);
+    if (parkingVal < 0) {
+      setParking(0);
+      return;
+    }
+    setParking(parkingVal);
+  };
+
+  const handleHour = (val: string) => {
+    const hourVal = Number(val);
+    if (hourVal > 23) {
+      setHour(23);
+      return;
+    }
+    if (hourVal < 0) {
+      setHour(0);
+      return;
+    }
+    setHour(hourVal);
+  };
+
+  const handleMinute = (val: string) => {
+    const minuteVal = Number(val);
+    if (minuteVal > 59) {
+      setMinute(59);
+      return;
+    }
+    if (minuteVal < 0) {
+      setMinute(0);
+      return;
+    }
+    setMinute(minuteVal);
+  };
+
+  useEffect(() => {
+    setTime(hour + minute / 60);
+  }, [hour, minute]);
+
   return (
     <div className="App">
-      <h1>ClockSnap</h1>
-      <h2>{userName}</h2>
+      <div className="TitleArea">
+        <h1>ClockSnap</h1>
+        <h2>{userName}</h2>
+      </div>
       <div className="Form">
-        <h3>Hours</h3>
-        <div className="Hours">
-          <select
-            value={hour.toString()}
-            onChange={(e) => setHour(Number(e.target.value))}
-          >
-            {hourOptions.map((option) => (
-              <option key={option}>{option.toString()}</option>
-            ))}
-          </select>
-          <select
-            value={fraction.toString()}
-            onChange={(e) => setFraction(Number(e.target.value))}
-          >
-            {fractionOptions.map((option) => (
-              <option key={option}>{option.toString()}</option>
-            ))}
-          </select>
+        <div className="Row">
+          <label>
+            Hours
+            <input
+              className="Number"
+              type="number"
+              value={hour.toString()}
+              onChange={(e) => handleHour(e.target.value)}
+            />
+          </label>
+          <label>
+            Minutes
+            <input
+              className="Number"
+              type="number"
+              value={minute.toString()}
+              onChange={(e) => handleMinute(e.target.value)}
+            />
+          </label>
         </div>
-        <input
-          type="date"
-          className="DateSelector"
-          onChange={(e) => setDate(new Date(e.target.value))}
-          value={date ? date.toISOString().split("T")[0] : ""}
-        />
-
-        <h3>Project</h3>
-        <select value={project?.id || ""} onChange={handleProjectChange}>
-          <option value="" disabled>
-            Select a project
-          </option>
-          {projectOptions.map(({ name, id }) => (
-            <option key={id} value={id}>
-              {name}
-            </option>
-          ))}
-        </select>
         <label>
-          Drafting:
+          Date
           <input
-            className="Checkbox"
-            type="checkbox"
-            checked={drafting}
-            onChange={() => setDrafting(!drafting)}
+            type="date"
+            className="DateSelector"
+            onChange={(e) => setDate(new Date(e.target.value))}
+            value={date ? date.toISOString().split("T")[0] : ""}
           />
         </label>
-        <div className="NumberRow">
+        <label>
+          Project
+          <select value={project?.id || ""} onChange={handleProjectChange}>
+            <option value="" disabled>
+              Select a project
+            </option>
+            {projectOptions.map(({ name, id }) => (
+              <option key={id} value={id}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="Row">
+          <label className="Checkbox">
+            Drafting:
+            <input
+              type="checkbox"
+              checked={drafting}
+              onChange={() => setDrafting(!drafting)}
+            />
+          </label>
+          <label className="Checkbox">
+            Design Assistant:
+            <input
+              type="checkbox"
+              checked={designAssistant}
+              onChange={() => setDesignAssistant(!designAssistant)}
+            />
+          </label>
+        </div>
+        <div className="Row">
           <label>
             Mileage
             <input
               className="Number"
               type="number"
               value={mileage}
-              onChange={(e) => setMileage(Number(e.target.value))}
+              onChange={(e) => handleMileage(e.target.value)}
             />
           </label>
           <label>
@@ -243,15 +310,24 @@ function App() {
               className="Number"
               type="number"
               value={parking.toString()}
-              onChange={(e) => setParking(Number(e.target.value))}
+              onChange={(e) => handleParking(e.target.value)}
             />
           </label>
         </div>
-        <TextArea
+        <label>
+          Note
+          <textarea
+            value={note}
+            onChange={(e) => {
+              setNote(e.target.value);
+            }}
+          />
+        </label>
+        {/* <TextArea
           value={note}
           label="Note"
           onChange={(value) => setNote(value)}
-        />
+        /> */}
         <div className={submitClass} onClick={() => submitForm()}>
           {submitButtonLabel}
         </div>

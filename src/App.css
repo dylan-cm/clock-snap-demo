@@ -8,73 +8,42 @@
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: var(--bg)-color;
   height: 100vh;
   width: 100vw;
-  padding-top: 16px;
   box-sizing: border-box;
   color: white;
 }
 
-#time-log-form {
-  max-width: 640px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  background-color: var(--bg-color);
-  border-radius: 8px;
-  box-sizing: border-box;
-}
-
-#hours-selector {
-  display: flex;
-  flex-direction: row;
-  box-sizing: border-box;
-}
-
-.FormWrapper {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-
-.form-select {
-  background-color: var(--shaded2);
-  border-color: var(--highlighted6);
-  color: white;
-  box-sizing: border-box;
-}
-
-.TimeSelector {
-  background-color: var(--shaded6);
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  height: 298px;
-  box-sizing: border-box;
-}
-
-.TimeSwipe {
-  height: 100%;
-  width: 100%;
+h1,
+h2 {
   text-align: center;
-  box-sizing: border-box;
+  margin: 0;
 }
 
-h3,
+.TitleArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  padding-top: 24px;
+  padding-bottom: 16px;
+}
+
 label {
   font-size: 20px;
-  margin-bottom: 8px;
-  margin-top: 24px;
-  box-sizing: border-box;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 select,
+textarea,
+input,
 .Submit {
   background-color: var(--shaded2);
   color: white;
@@ -86,22 +55,20 @@ select,
   font-size: 16px;
 }
 
+textarea {
+  resize: none;
+}
+
 .Form {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: stretch;
-  justify-content: flex-start;
   width: 100%;
   max-width: 640px;
   height: 100%;
+  max-height: 600px;
   padding: 16px;
-  box-sizing: border-box;
-}
-
-.Hours {
-  display: flex;
-  flex-direction: row;
-  gap: 24px;
   box-sizing: border-box;
 }
 
@@ -112,7 +79,6 @@ select,
   align-items: center;
   text-align: center;
   font-weight: bold;
-  margin-top: 24px;
   cursor: pointer;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
   user-select: none;
@@ -128,6 +94,7 @@ select,
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
   background-color: var(--highlighted2);
   cursor: default;
+  border: none !important;
 }
 
 .Success {
@@ -157,7 +124,6 @@ a {
   border-radius: 8px;
   border: 1px solid var(--highlighted4);
   padding: 4px 16px;
-  margin-top: 16px;
   box-sizing: border-box;
   width: 100%;
   text-align: center;
@@ -167,12 +133,11 @@ a {
 }
 
 .SignOut {
-  margin: 12px;
-  box-sizing: border-box;
   text-decoration: underline;
   cursor: pointer;
   user-select: none;
   box-sizing: border-box;
+  margin-bottom: 24px;
 }
 
 input.Number {
@@ -181,7 +146,6 @@ input.Number {
   border-radius: 8px;
   border: 1px solid var(--highlighted4);
   padding: 4px 16px;
-  margin-top: 16px;
   box-sizing: border-box;
   width: 100%;
   text-align: center;
@@ -190,13 +154,43 @@ input.Number {
   box-sizing: border-box;
 }
 
-.NumberRow {
+.Row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 16px;
+  width: 100%;
 }
 
 .Checkbox {
-  margin-left: 24px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  width: 100%;
+}
+
+.Checkbox > input {
+  width: auto;
+  margin: 0;
+}
+
+@media screen and (max-width: 350px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1rem;
+  }
+  label {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 280px) {
+  .Checkbox {
+    flex-direction: column;
+    gap: 4px;
+  }
 }
