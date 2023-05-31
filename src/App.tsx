@@ -2,52 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db, UserAuth } from "./firebase";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { AriaTextFieldProps, useTextField } from "react-aria";
 import "./App.css";
-
-function TextArea(props: AriaTextFieldProps) {
-  let { label } = props;
-  let ref = React.useRef(null);
-  let { labelProps, inputProps } = useTextField(
-    {
-      ...props,
-      inputElementType: "textarea",
-    },
-    ref
-  );
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        minHeight: 200,
-      }}
-    >
-      <label
-        style={{ fontSize: 20, margin: "24px 0px 8px 0px", fontWeight: "bold" }}
-        {...labelProps}
-      >
-        {label}
-      </label>
-      <textarea
-        style={{
-          background: "transparent",
-          color: "white",
-          borderRadius: 8,
-          padding: 12,
-          fontSize: 14,
-          fontFamily: "sans-serif",
-          boxSizing: "border-box",
-          width: "100%",
-        }}
-        {...inputProps}
-        ref={ref}
-      />
-    </div>
-  );
-}
 
 function App() {
   const [date, setDate] = useState(new Date());
@@ -56,6 +11,7 @@ function App() {
   const [time, setTime] = useState(0);
   const [mileage, setMileage] = useState(0);
   const [parking, setParking] = useState(0);
+  const [formattedParking, setFormattedParking] = useState("$0.00");
   const [drafting, setDrafting] = useState(false);
   const [designAssistant, setDesignAssistant] = useState(false);
   const [userName, setUserName] = useState("");
@@ -73,6 +29,15 @@ function App() {
 
   const { user, signOut } = UserAuth();
   const navigate = useNavigate();
+
+  const handleParking = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value;
+    let numeric = input.replace(/\D/g, "");
+    if (!input) numeric = "000";
+    let formatted = `$${(parseInt(numeric, 10) / 100).toFixed(2)}`;
+    setParking(parseInt(numeric, 10) / 100);
+    setFormattedParking(formatted);
+  };
 
   const handleSignOut = async () => {
     try {
@@ -188,15 +153,6 @@ function App() {
     setMileage(mileageVal);
   };
 
-  const handleParking = (val: string) => {
-    const parkingVal = Number(val);
-    if (parkingVal < 0) {
-      setParking(0);
-      return;
-    }
-    setParking(parkingVal);
-  };
-
   const handleHour = (val: string) => {
     const hourVal = Number(val);
     if (hourVal > 23) {
@@ -269,11 +225,13 @@ function App() {
             <option value="" disabled>
               Select a project
             </option>
-            {projectOptions.map(({ name, id }) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
+            {projectOptions
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map(({ name, id }) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
           </select>
         </label>
         <div className="Row">
@@ -308,9 +266,9 @@ function App() {
             Parking
             <input
               className="Number"
-              type="number"
-              value={parking.toString()}
-              onChange={(e) => handleParking(e.target.value)}
+              type="text"
+              value={formattedParking}
+              onChange={(e) => handleParking(e)}
             />
           </label>
         </div>
@@ -323,11 +281,6 @@ function App() {
             }}
           />
         </label>
-        {/* <TextArea
-          value={note}
-          label="Note"
-          onChange={(value) => setNote(value)}
-        /> */}
         <div className={submitClass} onClick={() => submitForm()}>
           {submitButtonLabel}
         </div>

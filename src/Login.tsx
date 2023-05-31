@@ -59,7 +59,7 @@ function TextField(props: AriaTextFieldProps) {
 function Button(props: AriaButtonProps) {
   let { children } = props;
   let ref = useRef(null);
-  let { buttonProps, isPressed } = useButton(
+  let { buttonProps } = useButton(
     {
       ...props,
       elementType: "span",
@@ -119,7 +119,7 @@ const Login = ({ ...props }: LoginProps) => {
         name="password"
       />
       <Button onPress={(e) => onSubmit(e)}>Submit</Button>
-      <p style={{ fontSize: 8, marginTop: 12, color: "white" }}>v0.1.5</p>
+      <p style={{ fontSize: 8, marginTop: 12, color: "white" }}>v0.1.9</p>
     </div>
   );
 };

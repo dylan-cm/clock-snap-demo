@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import { Workbox } from "workbox-window";
 import reportWebVitals from "./reportWebVitals";
 import Login from "./Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -25,6 +26,18 @@ root.render(
   </React.StrictMode>
 );
 
-serviceWorkerRegistration.register();
+if ("serviceWorker" in navigator) {
+  const wb = new Workbox(`${process.env.PUBLIC_URL}/service-worker.js`);
+
+  wb.addEventListener("installed", (event) => {
+    if (event.isUpdate) {
+      window.location.reload();
+    }
+  });
+
+  wb.register();
+} else {
+  serviceWorkerRegistration.unregister();
+}
 
 reportWebVitals();

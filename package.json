@@ -1,6 +1,6 @@
 {
   "name": "clock-snap",
-  "version": "0.1.5",
+  "version": "0.1.9",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -29,7 +29,8 @@
     "workbox-range-requests": "^6.5.4",
     "workbox-routing": "^6.5.4",
     "workbox-strategies": "^6.5.4",
-    "workbox-streams": "^6.5.4"
+    "workbox-streams": "^6.5.4",
+    "workbox-window": "^6.6.1"
   },
   "scripts": {
     "start": "react-scripts start",
