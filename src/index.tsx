@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import Login from "./Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthContextProvider } from "./firebase";
+import Dashboard from "./comps/layouts/Dashboard/Dashboard";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -20,6 +21,7 @@ root.render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/dashboard/*" element={<Dashboard />} />
         </Routes>
       </AuthContextProvider>
     </BrowserRouter>

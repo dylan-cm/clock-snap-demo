@@ -1,0 +1,73 @@
+.Dashboard {
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  position: relative;
+}
+
+.SideNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 60px;
+  background-color: #2e7bee;
+  box-shadow: 2px 0 4px 0 rgba(0, 0, 0, 0.25);
+  border-radius: 0 8px 8px 0;
+  overflow: hidden;
+  transition: width 200ms ease-in-out;
+}
+
+.SideNav:hover {
+  width: 240px;
+}
+
+.SideNavButton,
+.Logo {
+  position: relative;
+  width: 240px;
+  height: 72px;
+  border-color: rgba(255, 255, 255, 0.25);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 44px;
+  padding-left: 16px;
+  color: #003293;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.SideNavButton:hover,
+.SideNavButton.OnPath {
+  background-color: #2570e0;
+  color: #fff;
+}
+
+.SideNavButton:last-child {
+  border-width: 0 0 0 0;
+}
+
+.SideNavButton.Selected,
+.Logo {
+  color: #fff;
+}
+
+.Logo {
+  font-weight: 800;
+}
+
+.LogoIcon {
+  font-size: 28px;
+}
+
+.DashContainer {
+  width: calc(100% - 60px);
+  height: 100%;
+  padding: 16px;
+  margin-left: 60px;
+  display: flex;
+  flex-direction: column;
+}

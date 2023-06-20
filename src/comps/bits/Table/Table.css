@@ -1,0 +1,43 @@
+table.Table {
+  table-layout: auto;
+  width: 100%;
+}
+
+thead {
+  background-color: #bbb;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 10px;
+}
+
+td.CheckboxCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+table.Table .Checkbox {
+  width: 17px;
+  height: 17px;
+  background-color: #fff;
+  border: 2px solid #2e7bee;
+  cursor: pointer;
+  pointer-events: none;
+  border-radius: 4px;
+  padding: 0;
+  margin: 0;
+  gap: 0;
+}
+
+table .Checkbox.Checked {
+  background-color: #2e7bee;
+}
+
+td.Note,
+th.Note {
+  text-align: left;
+  width: 40%;
+}
