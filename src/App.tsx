@@ -183,11 +183,18 @@ function App() {
     setTime(hour + minute / 60);
   }, [hour, minute]);
 
+  const toDashboard = () => {
+    navigate("dashboard");
+  };
+
   return (
     <div className="App">
       <div className="TitleArea">
         <h1>ClockSnap</h1>
         <h2>{userName}</h2>
+        <button className="ToDashboard" onClick={toDashboard}>
+          Go to Dashboard
+        </button>
       </div>
       <div className="Form">
         <div className="Row">

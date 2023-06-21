@@ -1,14 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Calendar.css";
-import { MdOutlineTimer } from "react-icons/md";
+import { MdAdd, MdOutlineTimer } from "react-icons/md";
+import Dropdown from "../../atoms/Dropdown/Dropdown";
+import { useNavigate, useParams } from "react-router-dom";
+import { calculateContrast } from "../../../utils/helper";
 
-interface CalendarProps {}
-const Calendar = ({ ...props }: CalendarProps) => {
+interface CalendarProps {
+  logs: Log[];
+  projects: Project[];
+}
+const Calendar = ({ logs, projects, ...props }: CalendarProps) => {
+  const navigate = useNavigate();
+  const { year, month } = useParams();
   const [date, setDate] = useState(new Date());
+  const [selectedProject, setSelectedProject] = useState<string>("");
+  const [filteredLogs, setFilteredLogs] = useState<Log[]>([]);
+
+  useEffect(() => {
+    if (year !== undefined && month !== undefined) {
+      const newDate = new Date(Number(year), Number(month));
+      setDate(newDate);
+    }
+  }, [year, month]);
+
+  useEffect(() => {
+    const filteredLogs = logs.filter((log) => {
+      return (
+        log.date.getMonth() === date.getMonth() &&
+        log.date.getFullYear() === date.getFullYear() &&
+        (!selectedProject || log.project.name === selectedProject)
+      );
+    });
+    setFilteredLogs(filteredLogs);
+  }, [logs, date, selectedProject]);
+
+  const onAddLog = () => {
+    navigate("/");
+  };
 
   const nextMonth = () => {
     setDate((prevDate) => {
       const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() + 1);
+      window.history.replaceState(
+        null,
+        "Calendar",
+        `/dashboard/calendar/${newDate.getFullYear()}/${newDate.getMonth()}`
+      );
       return newDate;
     });
   };
@@ -16,17 +53,35 @@ const Calendar = ({ ...props }: CalendarProps) => {
   const previousMonth = () => {
     setDate((prevDate) => {
       const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth() - 1);
+      window.history.replaceState(
+        null,
+        "Calendar",
+        `/dashboard/calendar/${newDate.getFullYear()}/${newDate.getMonth()}`
+      );
       return newDate;
     });
   };
 
-  const selectDate = (eventId: string) => {
-    console.log(eventId);
+  const selectLog = (log: Log) => {
+    navigate(`/dashboard/log/${log.id}`);
+  };
+
+  const selectProject = (val: string) => {
+    setSelectedProject(val);
   };
 
   return (
     <div className="CalendarView">
       <div className="TopBar">
+        <Dropdown
+          label="Projects"
+          options={projects.map((project) => ({
+            value: project.name,
+            color: project.color,
+          }))}
+          selectedOption={selectedProject}
+          onChange={selectProject}
+        />
         <div className="MonthSelector" onClick={previousMonth}>
           {"<"}
         </div>
@@ -35,6 +90,9 @@ const Calendar = ({ ...props }: CalendarProps) => {
         <div className="MonthSelector" onClick={nextMonth}>
           {">"}
         </div>
+        <button className="AddLogButton" onClick={onAddLog}>
+          <MdAdd /> <span id="addLogLabel">Add Log</span>
+        </button>
       </div>
       <div className="DaysOfWeek">
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
@@ -44,20 +102,25 @@ const Calendar = ({ ...props }: CalendarProps) => {
       <div className="Calendar">
         {getCalendar(date).map((calDate, i) => (
           <DaySquare
-            key={calDate.date.toLocaleDateString()}
-            date={calDate.date}
-            events={calDate.events}
-            onClick={(eventId) => selectDate(eventId)}
+            key={calDate.toLocaleDateString()}
+            date={calDate}
+            logs={filteredLogs.filter((log) => {
+              return (
+                log.date.toLocaleDateString() === calDate.toLocaleDateString()
+              );
+            })}
+            onClick={(selectedLog) => selectLog(selectedLog)}
             style={{
               borderRadius: `${i === 0 ? "8px" : 0} ${i === 6 ? "8px" : 0} ${
                 i === 34 ? "8px" : 0
               } ${i === 28 ? "8px" : 0}`,
               backgroundColor:
-                calDate.date.getMonth() === date.getMonth() ? "#fff" : "#ddd",
+                calDate.getMonth() === date.getMonth() ? "#fff" : "#ddd",
               color:
-                calDate.date.getMonth() !== date.getMonth()
+                calDate.getMonth() !== date.getMonth()
                   ? "#777"
-                  : calDate.date.getDate() === new Date().getDate()
+                  : calDate.toLocaleDateString() ===
+                    new Date().toLocaleDateString()
                   ? "rgb(46,123,238)"
                   : "#000",
             }}
@@ -71,8 +134,8 @@ const Calendar = ({ ...props }: CalendarProps) => {
 interface DaySquareProps {
   date: Date;
   style?: React.CSSProperties;
-  onClick: (eventId: string) => void;
-  events: { name: string; color: string; hrs: number; id: string }[];
+  onClick: (logId: Log) => void;
+  logs: Log[];
 }
 const DaySquare = ({ ...props }: DaySquareProps) => {
   return (
@@ -91,31 +154,33 @@ const DaySquare = ({ ...props }: DaySquareProps) => {
       }}
     >
       {props.date.getDate()}
-      {props.events.map((event) => (
-        <div
-          className="EventChip"
-          key={`${event.name}${event.hrs}${props.date}`}
-          onClick={() => props.onClick(event.id)}
-          style={{ background: event.color }}
-        >
-          <MdOutlineTimer />
-          {`${event.name
-            .split(" ")
-            .map((word) => word[0])
-            .slice(0, 2)
-            .join("")} - ${event.hrs}`}
-        </div>
-      ))}
+      {props.logs.map((log) => {
+        const name = log.name
+          .split(" ")
+          .map((word) => word[0])
+          .slice(0, 2)
+          .join("");
+        return (
+          <div
+            className="LogChip"
+            key={log.id}
+            onClick={() => props.onClick(log)}
+            style={{
+              background: log.project.color,
+              color: calculateContrast(log.project.color),
+            }}
+          >
+            <MdOutlineTimer />
+            <span id="logTime">{log.time}</span>
+            <span id="logName">{`${name}`}</span>
+          </div>
+        );
+      })}
     </div>
   );
 };
 
-const getCalendar = (
-  currentDate: Date
-): {
-  date: Date;
-  events: { name: string; color: string; hrs: number; id: string }[];
-}[] => {
+const getCalendar = (currentDate: Date): Date[] => {
   // Prepare the dayArr array.
   const dayArr: Date[] = [];
   // Set the specified date.
@@ -140,43 +205,16 @@ const getCalendar = (
   // Add days until we've covered all the days in the current month and any remaining days in the week of the next month.
   while (
     day.getMonth() === currentDate.getMonth() ||
-    dayArr.length === 0 ||
-    day.getDay() !== 0
+    day.getDay() !== 0 ||
+    dayArr.length < 42 // Make sure we always have 6 weeks.
   ) {
     // Add the current day to the dayArr.
     dayArr.push(new Date(day));
     // Move on to the next day.
     day.setDate(day.getDate() + 1);
   }
-  const range = { from: dayArr[0], to: dayArr[dayArr.length - 1] };
-  const eventsArray: {
-    name: string;
-    color: string;
-    hrs: number;
-    id: string;
-  }[] = []; //search for all dates within range
 
-  return dayArr.map((date) => ({
-    date,
-    // events: eventsArray,
-    events:
-      date.getDate() === 1
-        ? [
-            {
-              name: "Tyler Vaughn",
-              color: "#9e9",
-              hrs: 12.75,
-              id: "lsjdn8h9hno",
-            },
-            {
-              name: "Dylan Cortez-Modell",
-              color: "#ea5",
-              hrs: 3,
-              id: "sadfajgh56543f",
-            },
-          ]
-        : [],
-  }));
+  return dayArr;
 };
 
 const getMonthName = (month: number): string => {

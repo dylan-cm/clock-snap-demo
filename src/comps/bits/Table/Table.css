@@ -1,16 +1,20 @@
 table.Table {
-  table-layout: auto;
   width: 100%;
+  border-spacing: 0;
 }
 
 thead {
-  background-color: #bbb;
+  background-color: #ccc;
 }
 
 th,
 td {
   text-align: center;
-  padding: 10px;
+  padding: 8px;
+}
+
+tr {
+  box-sizing: border-box;
 }
 
 td.CheckboxCell {

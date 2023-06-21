@@ -1,5 +1,6 @@
 import React, { FC, ChangeEvent, useState } from "react";
 import "./Dropdown.css";
+import { calculateContrast } from "../../../utils/helper";
 
 interface DropdownProps {
   options: { value: string | number; color?: string }[];
@@ -32,11 +33,13 @@ const Dropdown: FC<DropdownProps> = ({
       style={{
         backgroundColor:
           index >= 0 && !!options[index].color ? options[index].color : "white",
+        color:
+          index >= 0 && options[index].color
+            ? calculateContrast(options[index].color || "white")
+            : "black",
       }}
     >
-      <option value="" disabled>
-        {label}
-      </option>
+      <option value="">{label}</option>
       {options.map((option, index) => (
         <option key={index} value={option.value}>
           {option.value}

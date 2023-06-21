@@ -2,22 +2,11 @@ import React, { FC } from "react";
 import "./Table.css";
 import { MdCheckCircle } from "react-icons/md";
 
-type TableRowData = {
-  date: Date;
-  teamMember: string;
-  hours: number;
-  parking: number;
-  miles: number;
-  designAssist: boolean;
-  drafting: boolean;
-  note: string;
-};
-
 interface TableProps {
-  data: TableRowData[];
+  logs: Log[];
 }
 
-const Table: FC<TableProps> = ({ data }) => {
+const Table: FC<TableProps> = ({ logs }) => {
   return (
     <table className="Table">
       <thead>
@@ -33,39 +22,43 @@ const Table: FC<TableProps> = ({ data }) => {
         </tr>
       </thead>
       <tbody>
-        {data.map((row, index) => (
+        {logs.map((log, index) => (
           <tr
             key={index}
             style={{ backgroundColor: index % 2 !== 0 ? "#eee" : "#fff" }}
           >
-            <td>{row.date.toLocaleDateString()}</td>
-            <td>{row.teamMember}</td>
-            <td>{row.hours.toFixed(2)}</td>
-            <td>{`$${row.parking.toFixed(2)}`}</td>
-            <td>{row.miles.toFixed(0)}</td>
+            <td>{log.date.toLocaleDateString()}</td>
+            <td>{log.name}</td>
+            <td>{log.time?.toFixed(2)}</td>
+            <td>{`$${log.parking?.toFixed(2)}`}</td>
+            <td>{log.mileage?.toFixed(0)}</td>
             <td className="CheckboxCenter">
-              <div className={`Checkbox ${row.designAssist ? "Checked" : ""}`}>
+              <div
+                className={`Checkbox ${log.designAssistant ? "Checked" : ""}`}
+              >
                 <center style={{ width: "100%", height: "100%" }}>
                   <MdCheckCircle
                     color="#fff"
                     size={13}
-                    style={{ display: row.designAssist ? "inherit" : "none" }}
+                    style={{
+                      display: log.designAssistant ? "inherit" : "none",
+                    }}
                   />
                 </center>
               </div>
             </td>
             <td className="CheckboxCenter">
-              <div className={`Checkbox ${row.drafting ? "Checked" : ""}`}>
+              <div className={`Checkbox ${log.drafting ? "Checked" : ""}`}>
                 <center style={{ width: "100%", height: "100%" }}>
                   <MdCheckCircle
                     color="#fff"
                     size={13}
-                    style={{ display: row.drafting ? "inherit" : "none" }}
+                    style={{ display: log.drafting ? "inherit" : "none" }}
                   />
                 </center>
               </div>
             </td>
-            <td className="Note">{row.note}</td>
+            <td className="Note">{log.note}</td>
           </tr>
         ))}
       </tbody>

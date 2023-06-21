@@ -1,6 +1,7 @@
 .Dashboard {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   background-color: #fff;
   position: relative;
 }
@@ -66,8 +67,18 @@
 .DashContainer {
   width: calc(100% - 60px);
   height: 100%;
-  padding: 16px;
   margin-left: 60px;
   display: flex;
   flex-direction: column;
+}
+
+@media screen and (max-width: 600px) {
+  .SideNav {
+    display: none;
+  }
+
+  .DashContainer {
+    width: 100%;
+    margin: 0;
+  }
 }
