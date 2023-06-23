@@ -12,10 +12,6 @@ code {
     monospace;
 }
 
-:root {
-  background-color: rgba(28, 40, 51, 1);
-}
-
 * {
   box-sizing: border-box !important;
 }

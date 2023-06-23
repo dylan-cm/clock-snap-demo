@@ -1,0 +1,93 @@
+.Login {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  overflow: hidden;
+
+  --shaded6: rgba(0, 0, 0, 0.6);
+  --shaded2: rgba(0, 0, 0, 0.2);
+  --highlighted6: rgba(255, 255, 255, 0.6);
+  --highlighted4: rgba(255, 255, 255, 0.4);
+  --highlighted2: rgba(255, 255, 255, 0.2);
+  --bg-color: rgba(28, 40, 51, 1);
+}
+
+.SignIn {
+  background-color: var(--shaded2);
+  color: white;
+  border-radius: 8px;
+  border: 1px solid var(--highlighted4);
+  padding: 6px 12px;
+  box-sizing: border-box;
+  width: 200px;
+  font-size: 16px;
+  background-color: #2e7bee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 24px;
+  cursor: pointer;
+
+  user-select: none;
+  border: none;
+  box-sizing: border-box;
+}
+
+.SignIn:hover {
+  background-color: #1e529f;
+}
+
+.SignIn:active {
+  background-color: #162740;
+}
+
+.Login form {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+  padding: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Login label {
+  width: 100%;
+  color: black;
+  margin: 24px 0px 8px 0px;
+  font-weight: 600;
+  font-size: 20;
+  user-select: none;
+}
+
+.Login h1 {
+  text-align: center;
+  width: 100%;
+  user-select: none;
+}
+
+.Login input {
+  border: 1px solid #ddd;
+  background: #eee;
+  color: black;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  font-family: sans-serif;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.Login p {
+  font-size: 10px;
+  margin-top: 12px;
+  color: black;
+  user-select: none;
+}

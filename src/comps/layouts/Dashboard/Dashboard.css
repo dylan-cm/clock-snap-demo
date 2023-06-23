@@ -3,7 +3,6 @@
   min-height: 100vh;
   height: 100%;
   background-color: #fff;
-  position: relative;
 }
 
 .SideNav {
@@ -66,10 +65,17 @@
 
 .DashContainer {
   width: calc(100% - 60px);
+  min-height: 100vh;
   height: 100%;
   margin-left: 60px;
   display: flex;
   flex-direction: column;
+}
+
+.SignOut {
+  position: absolute;
+  bottom: 0px;
+  text-decoration: none;
 }
 
 @media screen and (max-width: 600px) {

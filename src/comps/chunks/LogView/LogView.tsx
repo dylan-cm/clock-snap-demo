@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./LogView.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { db } from "../../../firebase";
+import { db } from "../../../context/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { formatCurrency } from "../../../utils/helper";
 import { MdArrowBack } from "react-icons/md";

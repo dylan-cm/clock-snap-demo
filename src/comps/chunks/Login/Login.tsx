@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import "./Login.css";
 import { AriaTextFieldProps, AriaButtonProps } from "react-aria";
 import { useTextField, useButton } from "react-aria";
-import { UserAuth } from "./firebase";
+import { useAuth } from "../../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
 interface LoginProps {}
@@ -14,34 +14,11 @@ function TextField(props: AriaTextFieldProps) {
     useTextField(props, ref);
 
   return (
-    <form style={{ display: "flex", flexDirection: "column", width: 200 }}>
-      <label
-        {...labelProps}
-        style={{
-          color: "white",
-          margin: "24px 0px 8px 0px",
-          fontWeight: "bold",
-          fontSize: 20,
-        }}
-        htmlFor={String(label).toLowerCase()}
-      >
+    <>
+      <label {...labelProps} htmlFor={String(label).toLowerCase()}>
         {label}
       </label>
-      <input
-        {...inputProps}
-        ref={ref}
-        style={{
-          background: "transparent",
-          color: "white",
-          borderRadius: 8,
-          padding: 12,
-          fontSize: 14,
-          fontFamily: "sans-serif",
-          boxSizing: "border-box",
-          width: "100%",
-          border: "1px solid rgba(255, 255, 255, 0.4)",
-        }}
-      />
+      <input {...inputProps} ref={ref} />
       {props.description && (
         <div {...descriptionProps} style={{ fontSize: 12 }}>
           {props.description}
@@ -52,7 +29,7 @@ function TextField(props: AriaTextFieldProps) {
           {props.errorMessage}
         </div>
       )}
-    </form>
+    </>
   );
 }
 
@@ -79,11 +56,7 @@ const Login = ({ ...props }: LoginProps) => {
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const navigate = useNavigate();
-  const { user, signIn } = UserAuth();
-
-  useEffect(() => {
-    if (!!user) navigate("/");
-  }, [user, navigate]);
+  const { signIn } = useAuth();
 
   const onSubmit = async (e: any) => {
     // e.preventDefault();
@@ -99,27 +72,30 @@ const Login = ({ ...props }: LoginProps) => {
 
   return (
     <div className="Login">
-      <TextField
-        label="Email"
-        type="email"
-        name="email"
-        id="email"
-        autoComplete="username"
-        aria-autocomplete="both"
-        autoFocus
-        value={email}
-        onChange={(val) => setEmail(val)}
-      />
-      <TextField
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(val) => setPassword(val)}
-        errorMessage={err}
-        name="password"
-      />
-      <Button onPress={(e) => onSubmit(e)}>Submit</Button>
-      <p style={{ fontSize: 8, marginTop: 12, color: "white" }}>v0.1.9</p>
+      <form>
+        <h1>⏰ Clock Snap</h1>
+        <TextField
+          label="Email"
+          type="email"
+          name="email"
+          id="email"
+          autoComplete="username"
+          aria-autocomplete="both"
+          autoFocus
+          value={email}
+          onChange={(val) => setEmail(val)}
+        />
+        <TextField
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(val) => setPassword(val)}
+          errorMessage={err}
+          name="password"
+        />
+        <Button onPress={(e) => onSubmit(e)}>Sign In</Button>
+        <p>v1.0</p>
+      </form>
     </div>
   );
 };

@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./Calendar.css";
-import { MdAdd, MdOutlineTimer } from "react-icons/md";
+import { MdOutlineTimer } from "react-icons/md";
 import Dropdown from "../../atoms/Dropdown/Dropdown";
 import { useNavigate, useParams } from "react-router-dom";
 import { calculateContrast } from "../../../utils/helper";
+import { useData } from "../../../context/DataContext";
 
-interface CalendarProps {
-  logs: Log[];
-  projects: Project[];
-}
-const Calendar = ({ logs, projects, ...props }: CalendarProps) => {
+interface CalendarProps {}
+const Calendar = ({ ...props }: CalendarProps) => {
   const navigate = useNavigate();
   const { year, month } = useParams();
   const [date, setDate] = useState(new Date());
   const [selectedProject, setSelectedProject] = useState<string>("");
   const [filteredLogs, setFilteredLogs] = useState<Log[]>([]);
+  const { projects, logs } = useData();
 
   useEffect(() => {
     if (year !== undefined && month !== undefined) {
@@ -74,7 +73,7 @@ const Calendar = ({ logs, projects, ...props }: CalendarProps) => {
     <div className="CalendarView">
       <div className="TopBar">
         <Dropdown
-          label="Projects"
+          label="All Projects"
           options={projects.map((project) => ({
             value: project.name,
             color: project.color,
@@ -90,9 +89,6 @@ const Calendar = ({ logs, projects, ...props }: CalendarProps) => {
         <div className="MonthSelector" onClick={nextMonth}>
           {">"}
         </div>
-        <button className="AddLogButton" onClick={onAddLog}>
-          <MdAdd /> <span id="addLogLabel">Add Log</span>
-        </button>
       </div>
       <div className="DaysOfWeek">
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (

@@ -5,10 +5,8 @@ import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { Workbox } from "workbox-window";
 import reportWebVitals from "./reportWebVitals";
-import Login from "./Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthContextProvider } from "./firebase";
-import Dashboard from "./comps/layouts/Dashboard/Dashboard";
+import { AuthProvider } from "./context/UserContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,13 +15,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthContextProvider>
+      <AuthProvider>
         <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route path="/*" element={<App />} />
         </Routes>
-      </AuthContextProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
