@@ -50,3 +50,8 @@ th.Note {
   text-align: left;
   width: 40%;
 }
+
+table .Chip {
+  border-radius: 8px;
+  padding: 2px 8px;
+}

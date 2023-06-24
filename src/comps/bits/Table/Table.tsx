@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import "./Table.css";
 import { MdCheckCircle } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { calculateContrast } from "../../../utils/helper";
 
 interface TableProps {
   logs: Log[];
@@ -16,6 +17,7 @@ const Table: FC<TableProps> = ({ logs }) => {
         <tr>
           <th>Date</th>
           <th>Team Member</th>
+          <th>Project</th>
           <th>Hours</th>
           <th>Parking</th>
           <th>Miles</th>
@@ -33,6 +35,17 @@ const Table: FC<TableProps> = ({ logs }) => {
           >
             <td>{log.date.toLocaleDateString()}</td>
             <td>{log.name}</td>
+            <td>
+              <div
+                className="Chip"
+                style={{
+                  backgroundColor: log.project.color,
+                  color: calculateContrast(log.project.color),
+                }}
+              >
+                {log.project.name}
+              </div>
+            </td>
             <td>{log.time?.toFixed(2)}</td>
             <td>{`$${log.parking?.toFixed(2)}`}</td>
             <td>{log.mileage?.toFixed(0)}</td>
