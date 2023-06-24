@@ -3,7 +3,7 @@ import "./LogView.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../../../context/firebase";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
-import { formatCurrency } from "../../../utils/helper";
+import { calculateContrast, formatCurrency } from "../../../utils/helper";
 import { MdArrowBack } from "react-icons/md";
 import { useData } from "../../../context/DataContext";
 
@@ -13,14 +13,16 @@ const LogView = ({ ...props }: LogViewProps) => {
   const [logData, setLogData] = useState<Log | undefined>();
   const { logId } = useParams();
   const navigate = useNavigate();
-  const { refresh } = useData();
+  const { refresh, projects } = useData();
 
   useEffect(() => {
     const getLog = async () => {
       const docSnap = await getDoc(doc(db, "timeLog", logId || ""));
       if (docSnap.exists()) {
         const data = docSnap.data();
-        setLogData({
+        const project = projects.find((p) => p.id === data.project.id);
+        if (!project) return;
+        const fetchedLog = {
           name: data.userName,
           date: data.date.toDate(),
           time: data.time,
@@ -29,14 +31,15 @@ const LogView = ({ ...props }: LogViewProps) => {
           designAssistant: data.designAssistant,
           mileage: data.mileage,
           parking: data.parking,
-          project: data.project,
+          project: project,
           id: docSnap.id,
-        });
+        };
+        setLogData(fetchedLog);
       }
       setLoading(false);
     };
     getLog();
-  }, [logId]);
+  }, [logId, projects]);
 
   const editLog = () => {
     if (!logData) return;
@@ -68,10 +71,15 @@ const LogView = ({ ...props }: LogViewProps) => {
         <h1>No Such Document Exists</h1>
       ) : (
         <div className="Content">
-          <div className="Row">
-            <h2>{logData.name}</h2>
-            <h2>{logData.project.name}</h2>
-          </div>
+          <h2>{logData.name}</h2>
+          <h3
+            style={{
+              background: logData.project.color,
+              color: calculateContrast(logData.project.color),
+            }}
+          >
+            {logData.project.name}
+          </h3>
           <div className="Row">
             <p>{logData.date.toDateString()}</p>
             <div className="Combine">

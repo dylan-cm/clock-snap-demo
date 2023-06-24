@@ -35,8 +35,11 @@
   gap: 12px;
 }
 
-.LogView h2 {
-  margin-bottom: 100px;
+.LogView h3 {
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 6px 24px;
+  margin-bottom: 72px;
 }
 
 .LogView button.BackButton {
