@@ -3,7 +3,7 @@ import "./Dropdown.css";
 import { calculateContrast } from "../../../utils/helper";
 
 interface DropdownProps {
-  options: { value: string | number; color?: string }[];
+  options: any[];
   label: string;
   selectedOption: string;
   onChange: (selectedOption: string) => void;
@@ -18,9 +18,7 @@ const Dropdown: FC<DropdownProps> = ({
   const [index, setIndex] = useState(-1);
   const handleDropdownChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setIndex(
-      options.findIndex(
-        (option) => option.value.toString() === e.target.value.toString()
-      )
+      options.findIndex((option) => option.name === e.target.value.toString())
     );
     onChange(e.target.value);
   };
@@ -41,8 +39,8 @@ const Dropdown: FC<DropdownProps> = ({
     >
       <option value="">{label}</option>
       {options.map((option, index) => (
-        <option key={index} value={option.value}>
-          {option.value}
+        <option key={index} value={option.name}>
+          {option.name}
         </option>
       ))}
     </select>

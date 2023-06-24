@@ -14,6 +14,7 @@ interface DataContextProps {
   users: string[];
   loading: boolean;
   error: any;
+  refresh: () => Promise<void>;
 }
 
 const DataContext = createContext<DataContextProps | undefined>(undefined);
@@ -29,60 +30,63 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<any | undefined>(undefined);
 
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        const projectSnapshot = await getDocs(collection(db, "projects"));
-        const logSnapshot = await getDocs(collection(db, "timeLog"));
-        const userSnapshot = await getDocs(collection(db, "people"));
+  const refresh = async () => {
+    try {
+      const projectSnapshot = await getDocs(collection(db, "projects"));
+      const logSnapshot = await getDocs(collection(db, "timeLog"));
+      const userSnapshot = await getDocs(collection(db, "people"));
 
-        setProjects(
-          projectSnapshot.docs.map((project: DocumentSnapshot) => {
-            return {
-              name: project.data()?.name,
-              color: project.data()?.color,
-              id: project.id,
-            };
-          })
-        );
-        setLogs(
-          logSnapshot.docs.map((log: DocumentSnapshot) => {
-            const associatedProject = projectSnapshot.docs.find(
-              (project: DocumentSnapshot) =>
-                project?.data()?.name === log.data()?.project.name
-            );
-            return {
-              name: log.data()?.userName,
-              date: log.data()?.date.toDate(),
-              time: log.data()?.time,
-              note: log.data()?.note,
-              drafting: log.data()?.drafting,
-              designAssistant: log.data()?.designAssistant,
-              mileage: log.data()?.mileage,
-              parking: log.data()?.parking,
-              id: log.id,
-              project: {
-                name: associatedProject?.data()?.name,
-                color: associatedProject?.data()?.color,
-                id: associatedProject?.id ?? "",
-              },
-            };
-          })
-        );
-        setUsers(
-          userSnapshot.docs.map((user: DocumentSnapshot) => user?.data()?.name)
-        );
-        setLoading(false);
-      } catch (e) {
-        setError(e);
-        setLoading(false);
-      }
-    };
-    fetchInitialData();
+      setProjects(
+        projectSnapshot.docs.map((project: DocumentSnapshot) => {
+          return {
+            name: project.data()?.name,
+            color: project.data()?.color,
+            id: project.id,
+          };
+        })
+      );
+      setLogs(
+        logSnapshot.docs.map((log: DocumentSnapshot) => {
+          const associatedProject = projectSnapshot.docs.find(
+            (project: DocumentSnapshot) =>
+              project?.data()?.name === log.data()?.project.name
+          );
+          return {
+            name: log.data()?.userName,
+            date: log.data()?.date.toDate(),
+            time: log.data()?.time,
+            note: log.data()?.note,
+            drafting: log.data()?.drafting,
+            designAssistant: log.data()?.designAssistant,
+            mileage: log.data()?.mileage,
+            parking: log.data()?.parking,
+            id: log.id,
+            project: {
+              name: associatedProject?.data()?.name,
+              color: associatedProject?.data()?.color,
+              id: associatedProject?.id ?? "",
+            },
+          };
+        })
+      );
+      setUsers(
+        userSnapshot.docs.map((user: DocumentSnapshot) => user?.data()?.name)
+      );
+      setLoading(false);
+    } catch (e) {
+      setError(e);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refresh();
   }, []);
 
   return (
-    <DataContext.Provider value={{ projects, logs, users, loading, error }}>
+    <DataContext.Provider
+      value={{ projects, logs, users, loading, error, refresh }}
+    >
       {children}
     </DataContext.Provider>
   );

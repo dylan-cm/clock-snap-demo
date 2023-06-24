@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Calendar from "./comps/chunks/Calendar/Calendar";
-import Summary from "./comps/chunks/Summary/Summary";
+import SummaryView from "./comps/chunks/SummaryView/SummaryView";
 import ListView from "./comps/chunks/ListView/ListView";
 import LogForm from "./comps/chunks/LogForm/LogForm";
 import LogView from "./comps/chunks/LogView/LogView";
@@ -23,7 +23,7 @@ const App = ({ ...props }: AppProps) => {
           <Route element={<RequireAuth />}>
             <Route index element={<LogForm />} />
             <Route path="calendar/:year?/:month?" element={<Calendar />} />
-            <Route path="summary" element={<Summary />} />
+            <Route path="summary" element={<SummaryView />} />
             <Route path="logs">
               <Route index element={<ListView />} />
               <Route path=":logId" element={<LogView />} />

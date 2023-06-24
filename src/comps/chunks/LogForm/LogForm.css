@@ -15,8 +15,8 @@
   box-sizing: border-box;
 }
 
-h1,
-h2 {
+.LogForm h1,
+.LogForm h2 {
   text-align: center;
   margin: 0;
 }
@@ -41,9 +41,9 @@ label {
   margin-bottom: 8px;
 }
 
-select,
-textarea,
-input,
+.LogForm textarea,
+.LogForm select,
+.LogForm input,
 .Submit {
   border-radius: 8px;
   border: 1px solid var(--highlighted4);
@@ -53,11 +53,11 @@ input,
   font-size: 16px;
 }
 
-select {
+.LogForm select {
   border: 1px solid #ddd;
 }
 
-textarea {
+.LogForm textarea {
   resize: none;
   border: 1px solid #ddd;
 }
@@ -143,7 +143,7 @@ a {
   margin-bottom: 24px;
 }
 
-input.Number {
+.LogForm input.Number {
   border: 1px solid #ddd;
   color: black;
   border-radius: 8px;

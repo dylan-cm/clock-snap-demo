@@ -5,6 +5,7 @@ import { useAuth } from "../../../context/UserContext";
 import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import "./LogForm.css";
 import { calculateContrast } from "../../../utils/helper";
+import { useData } from "../../../context/DataContext";
 
 function LogForm() {
   const [date, setDate] = useState(new Date());
@@ -26,6 +27,7 @@ function LogForm() {
   const [projectOptions, setProjectOptions] = useState<Project[]>([]);
 
   const { user } = useAuth();
+  const { refresh } = useData();
   const navigate = useNavigate();
 
   const handleParking = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,6 +110,7 @@ function LogForm() {
         parking,
         designAssistant,
       });
+      await refresh();
       setLoading(false);
       setErr("");
       setSuccess(true);
