@@ -52,3 +52,39 @@
   font-size: 20px;
   margin-bottom: 72px;
 }
+
+.LogView button.Edit,
+.LogView button.Delete {
+  border: none;
+  margin: 0 24px;
+  margin-top: 48px;
+  padding: 8px 24px;
+  user-select: none;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.LogView button.Edit {
+  font-weight: 600;
+  color: #2e7bee;
+}
+
+.LogView button.Edit:hover {
+  background-color: #2e7bee41;
+}
+
+.LogView button.Edit:active {
+  background-color: #173c7468;
+}
+
+.LogView button.Delete {
+  color: #ee2e2e;
+}
+
+.LogView button.Delete:hover {
+  background-color: #ee2e2e41;
+}
+
+.LogView button.Delete:active {
+  background-color: #5f12126d;
+}

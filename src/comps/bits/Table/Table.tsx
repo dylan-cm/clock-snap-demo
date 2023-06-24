@@ -1,12 +1,15 @@
 import React, { FC } from "react";
 import "./Table.css";
 import { MdCheckCircle } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 interface TableProps {
   logs: Log[];
 }
 
 const Table: FC<TableProps> = ({ logs }) => {
+  const navigate = useNavigate();
+  const handleLineClick = (logId: string) => navigate(`/logs/${logId}`);
   return (
     <table className="Table">
       <thead>
@@ -26,6 +29,7 @@ const Table: FC<TableProps> = ({ logs }) => {
           <tr
             key={index}
             style={{ backgroundColor: index % 2 !== 0 ? "#eee" : "#fff" }}
+            onClick={() => handleLineClick(log.id)}
           >
             <td>{log.date.toLocaleDateString()}</td>
             <td>{log.name}</td>

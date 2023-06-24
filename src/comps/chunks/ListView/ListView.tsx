@@ -10,7 +10,11 @@ const ListView = ({ ...props }: ListViewProps) => {
   if (logs.length < 1) return <h1>Loading...</h1>;
   return (
     <div className="ListView">
-      <Table logs={logs} />
+      <Table
+        logs={logs.sort(
+          (logA, logB) => logB.date.getTime() - logA.date.getTime()
+        )}
+      />
     </div>
   );
 };

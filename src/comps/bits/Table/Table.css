@@ -15,6 +15,11 @@ td {
 
 tr {
   box-sizing: border-box;
+  cursor: pointer;
+}
+
+th {
+  cursor: auto;
 }
 
 td.CheckboxCell {
