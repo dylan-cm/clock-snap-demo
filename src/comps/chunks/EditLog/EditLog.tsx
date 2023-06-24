@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { db } from "../../../context/firebase";
 import { useAuth } from "../../../context/UserContext";
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import "./LogForm.css";
-import { calculateContrast } from "../../../utils/helper";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import "./EditLog.css";
+import { calculateContrast, formatCurrency } from "../../../utils/helper";
 import { useData } from "../../../context/DataContext";
 
-function LogForm() {
+function EditLog() {
   const [date, setDate] = useState(new Date());
   const [hour, setHour] = useState(0);
   const [minute, setMinute] = useState(0);
@@ -27,8 +34,27 @@ function LogForm() {
   const [projectOptions, setProjectOptions] = useState<Project[]>([]);
 
   const { user } = useAuth();
-  const { refresh } = useData();
+  const { refresh, logs } = useData();
   const navigate = useNavigate();
+  const { logId } = useParams();
+
+  useEffect(() => {
+    const log = logs.find((log) => log.id === logId);
+    if (!log) return;
+    setDate(log.date);
+    setTime(log.time);
+    const hour = Math.floor(log.time);
+    setHour(hour);
+    setMinute((log.time - hour) * 60);
+    setMileage(log.mileage);
+    setParking(log.parking);
+    setFormattedParking(formatCurrency(log.parking));
+    setDrafting(log.drafting);
+    setDesignAssistant(log.designAssistant);
+    setUserName(log.name);
+    setNote(log.note);
+    setProject(log.project);
+  }, [logs, logId]);
 
   const handleParking = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value;
@@ -40,11 +66,8 @@ function LogForm() {
   };
 
   useEffect(() => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
     const fetchOptions = async () => {
+      if (!user) return;
       try {
         const userDoc = await getDoc(doc(db, "people", user.uid));
 
@@ -78,10 +101,10 @@ function LogForm() {
 
   let formComplete =
     time > 0 && project && !success && !loading && mileage >= 0 && parking >= 0;
-  let submitButtonLabel = "Log Time";
-  if (loading) submitButtonLabel = "Logging Time...";
+  let submitButtonLabel = "Save Changes";
+  if (loading) submitButtonLabel = "Saving...";
   if (err) submitButtonLabel = "Try Again";
-  if (success) submitButtonLabel = "Logged Time ✓";
+  if (success) submitButtonLabel = "Saved ✓";
 
   let submitClass = "Submit";
   if (success) {
@@ -91,13 +114,13 @@ function LogForm() {
   }
 
   const submitForm = async () => {
-    if (!formComplete) return;
+    if (!formComplete || !logId) return;
     setLoading(true);
     setErr("");
     setSuccess(false);
     //send to firestore
     try {
-      await addDoc(collection(db, "timeLog"), {
+      await updateDoc(doc(db, "timeLog", logId), {
         hour,
         minute,
         time,
@@ -114,17 +137,7 @@ function LogForm() {
       setLoading(false);
       setErr("");
       setSuccess(true);
-      setTimeout(() => {
-        setSuccess(false);
-        setHour(0);
-        setMinute(0);
-        setProject(undefined);
-        setNote("");
-        setDrafting(false);
-        setDesignAssistant(false);
-        setMileage(0);
-        setParking(0);
-      }, 3000);
+      setTimeout(() => navigate(-1), 3000);
     } catch (error: any) {
       console.log("Error: ", error.toString());
       setLoading(false);
@@ -179,8 +192,14 @@ function LogForm() {
     setTime(hour + minute / 60);
   }, [hour, minute]);
 
+  const discardChanges = () => {
+    if (window.confirm("Your changes have not been saved!")) {
+      navigate(-1);
+    }
+  };
+
   return (
-    <div className="LogForm">
+    <div className="EditLog">
       <div className="TitleArea">
         <h2>{userName}</h2>
       </div>
@@ -301,9 +320,12 @@ function LogForm() {
         ) : (
           <></>
         )}
+        <button className="Discard" onClick={discardChanges}>
+          Discard Changes
+        </button>
       </div>
     </div>
   );
 }
 
-export default LogForm;
+export default EditLog;

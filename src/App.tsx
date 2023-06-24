@@ -10,6 +10,7 @@ import Dashboard from "./comps/layouts/Dashboard/Dashboard";
 import Login from "./comps/chunks/Login/Login";
 import { DataProvider } from "./context/DataContext";
 import RequireAuth from "./comps/RequireAuth";
+import EditLog from "./comps/chunks/EditLog/EditLog";
 
 interface AppProps {}
 
@@ -27,7 +28,7 @@ const App = ({ ...props }: AppProps) => {
             <Route path="logs">
               <Route index element={<ListView />} />
               <Route path=":logId" element={<LogView />} />
-              <Route path="edit/:logId" element={<LogView />} />
+              <Route path="edit/:logId" element={<EditLog />} />
             </Route>
           </Route>
           {/* catch all */}

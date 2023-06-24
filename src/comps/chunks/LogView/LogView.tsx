@@ -39,12 +39,17 @@ const LogView = ({ ...props }: LogViewProps) => {
   }, [logId]);
 
   const editLog = () => {
-    console.log("edit");
+    if (!logData) return;
+    navigate(`/logs/edit/${logData.id}`);
   };
 
   const deleteLog = async () => {
     if (!logData) return;
-    if (window.confirm("Are you sure you want to delete this item?")) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete this item? This action cannot be undone!"
+      )
+    ) {
       await deleteDoc(doc(db, "timeLog", logData.id));
       await refresh();
       navigate(-1);
