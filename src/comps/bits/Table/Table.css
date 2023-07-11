@@ -1,34 +1,34 @@
-table.Table {
+.Table {
+  display: flex;
   width: 100%;
-  border-spacing: 0;
+  overflow-x: scroll;
 }
 
-thead {
-  background-color: #ccc;
+.TableColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
-th,
-td {
-  text-align: center;
-  padding: 8px;
-}
-
-tr {
-  box-sizing: border-box;
+.TableRow {
   cursor: pointer;
+  padding: 6px;
+  font-size: 14px;
+  min-width: 120px;
+  height: 36px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap; /* Add this line */
 }
 
-th {
+.TableHead .TableRow {
   cursor: auto;
 }
 
-td.CheckboxCell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-table.Table .Checkbox {
+.Table .Checkbox {
   width: 17px;
   height: 17px;
   background-color: #fff;
@@ -41,17 +41,24 @@ table.Table .Checkbox {
   gap: 0;
 }
 
-table .Checkbox.Checked {
+.Table .Checkbox.Checked {
   background-color: #2e7bee;
 }
 
-td.Note,
-th.Note {
+.Table .Note,
+.Table .Note {
   text-align: left;
-  width: 40%;
+  align-self: flex-start;
+  width: 100%;
 }
 
-table .Chip {
+.Note span {
+  width: 100%;
+}
+
+.Table .Chip {
   border-radius: 8px;
   padding: 2px 8px;
+  text-align: center;
+  width: 100%;
 }

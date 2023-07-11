@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../../../context/firebase";
 import { useAuth } from "../../../context/UserContext";
 import {
-  addDoc,
   collection,
   doc,
   getDoc,

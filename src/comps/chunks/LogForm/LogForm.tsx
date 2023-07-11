@@ -41,7 +41,6 @@ function LogForm() {
 
   useEffect(() => {
     if (!user) {
-      navigate("/login");
       return;
     }
     const fetchOptions = async () => {

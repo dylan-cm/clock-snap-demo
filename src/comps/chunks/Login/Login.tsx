@@ -94,7 +94,7 @@ const Login = ({ ...props }: LoginProps) => {
           name="password"
         />
         <Button onPress={(e) => onSubmit(e)}>Sign In</Button>
-        <p>v1.0</p>
+        <p>v2.0</p>
       </form>
     </div>
   );

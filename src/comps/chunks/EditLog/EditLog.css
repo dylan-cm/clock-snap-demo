@@ -21,7 +21,7 @@
   margin: 0;
 }
 
-.TitleArea {
+.EditLog .TitleArea {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

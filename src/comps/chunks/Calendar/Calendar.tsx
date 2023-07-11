@@ -11,7 +11,9 @@ const Calendar = ({ ...props }: CalendarProps) => {
   const navigate = useNavigate();
   const { year, month } = useParams();
   const [date, setDate] = useState(new Date());
-  const [selectedProject, setSelectedProject] = useState<string>("");
+  const [selectedProject, setSelectedProject] = useState<
+    { name: string; color: string } | undefined
+  >();
   const [filteredLogs, setFilteredLogs] = useState<Log[]>([]);
   const { projects, logs } = useData();
 
@@ -27,14 +29,14 @@ const Calendar = ({ ...props }: CalendarProps) => {
       return (
         log.date.getMonth() === date.getMonth() &&
         log.date.getFullYear() === date.getFullYear() &&
-        (!selectedProject || log.project.name === selectedProject)
+        (!selectedProject || log.project.name === selectedProject.name)
       );
     });
     setFilteredLogs(filteredLogs);
   }, [logs, date, selectedProject]);
 
   const onAddLog = () => {
-    navigate("/");
+    navigate("/log");
   };
 
   const nextMonth = () => {
@@ -62,25 +64,29 @@ const Calendar = ({ ...props }: CalendarProps) => {
   };
 
   const selectLog = (log: Log) => {
-    navigate(`/dashboard/log/${log.id}`);
-  };
-
-  const selectProject = (val: string) => {
-    setSelectedProject(val);
+    navigate(`/log/${log.id}`);
   };
 
   return (
     <div className="CalendarView">
       <div className="TopBar">
-        <Dropdown
-          label="All Projects"
-          options={projects.map((project) => ({
-            value: project.name,
-            color: project.color,
-          }))}
-          selectedOption={selectedProject}
-          onChange={selectProject}
-        />
+        <select
+          value={selectedProject?.name || ""}
+          onChange={(e) =>
+            setSelectedProject(projects.find((p) => p.name === e.target.value))
+          }
+          style={{
+            backgroundColor: selectedProject?.color,
+            color: calculateContrast(selectedProject?.color || "#fff"),
+          }}
+        >
+          <option value={""}>All Projects</option>
+          {projects.map((p) => (
+            <option value={p.name} key={p.id}>
+              {p.name}
+            </option>
+          ))}
+        </select>
         <div className="MonthSelector" onClick={previousMonth}>
           {"<"}
         </div>

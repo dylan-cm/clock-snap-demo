@@ -24,18 +24,18 @@ root.render(
   </React.StrictMode>
 );
 
-if ("serviceWorker" in navigator) {
-  const wb = new Workbox(`${process.env.PUBLIC_URL}/service-worker.js`);
+// if ("serviceWorker" in navigator) {
+//   const wb = new Workbox(`${process.env.PUBLIC_URL}/service-worker.js`);
 
-  wb.addEventListener("installed", (event) => {
-    if (event.isUpdate) {
-      window.location.reload();
-    }
-  });
+//   wb.addEventListener("installed", (event) => {
+//     if (event.isUpdate) {
+//       window.location.reload();
+//     }
+//   });
 
-  wb.register();
-} else {
-  serviceWorkerRegistration.unregister();
-}
+//   wb.register();
+// } else {
+//   serviceWorkerRegistration.unregister();
+// }
 
-reportWebVitals();
+// reportWebVitals();

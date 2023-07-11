@@ -20,17 +20,18 @@ const LogView = ({ ...props }: LogViewProps) => {
       const docSnap = await getDoc(doc(db, "timeLog", logId || ""));
       if (docSnap.exists()) {
         const data = docSnap.data();
+
         const project = projects.find((p) => p.id === data.project.id);
         if (!project) return;
         const fetchedLog = {
           name: data.userName,
           date: data.date.toDate(),
-          time: data.time,
+          time: data.time || data.hour + data.fraction,
           note: data.note,
           drafting: data.drafting,
           designAssistant: data.designAssistant,
-          mileage: data.mileage,
-          parking: data.parking,
+          mileage: data.mileage || 0,
+          parking: data.parking || 0,
           project: project,
           id: docSnap.id,
         };
@@ -43,7 +44,7 @@ const LogView = ({ ...props }: LogViewProps) => {
 
   const editLog = () => {
     if (!logData) return;
-    navigate(`/logs/edit/${logData.id}`);
+    navigate(`/log/edit/${logData.id}`);
   };
 
   const deleteLog = async () => {

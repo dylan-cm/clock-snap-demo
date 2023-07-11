@@ -11,6 +11,9 @@ import Login from "./comps/chunks/Login/Login";
 import { DataProvider } from "./context/DataContext";
 import RequireAuth from "./comps/RequireAuth";
 import EditLog from "./comps/chunks/EditLog/EditLog";
+import Home from "./comps/chunks/Home/Home";
+import Projects from "./comps/chunks/Projects/Projects";
+import NotFound from "./comps/chunks/NotFound/NotFound";
 
 interface AppProps {}
 
@@ -22,17 +25,19 @@ const App = ({ ...props }: AppProps) => {
         <Route path="/" element={<Dashboard />}>
           {/* protected routes */}
           <Route element={<RequireAuth />}>
-            <Route index element={<LogForm />} />
+            <Route index element={<Home />} />
             <Route path="calendar/:year?/:month?" element={<Calendar />} />
             <Route path="summary" element={<SummaryView />} />
-            <Route path="logs">
-              <Route index element={<ListView />} />
+            <Route path="list" element={<ListView />} />
+            <Route path="log">
+              <Route index element={<LogForm />} />
               <Route path=":logId" element={<LogView />} />
               <Route path="edit/:logId" element={<EditLog />} />
             </Route>
+            <Route path="projects" element={<Projects />} />
           </Route>
           {/* catch all */}
-          <Route path="*" element={<h1>Not found</h1>} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </DataProvider>

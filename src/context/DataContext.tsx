@@ -51,15 +51,17 @@ export const DataProvider = ({ children }: DataProviderProps) => {
             (project: DocumentSnapshot) =>
               project?.data()?.name === log.data()?.project.name
           );
+          var time: number | undefined = log.data()?.time;
+          if (!time) time = log.data()?.hour + log.data()?.fraction;
           return {
             name: log.data()?.userName,
             date: log.data()?.date.toDate(),
-            time: log.data()?.time,
+            time: time || 0,
             note: log.data()?.note,
             drafting: log.data()?.drafting,
             designAssistant: log.data()?.designAssistant,
-            mileage: log.data()?.mileage,
-            parking: log.data()?.parking,
+            mileage: log.data()?.mileage || 0,
+            parking: log.data()?.parking || 0,
             id: log.id,
             project: {
               name: associatedProject?.data()?.name,
