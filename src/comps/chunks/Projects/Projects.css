@@ -71,3 +71,12 @@
 .Projects span {
   color: #f00;
 }
+
+@media screen and (max-width: 710px) {
+  .Projects .Grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+}

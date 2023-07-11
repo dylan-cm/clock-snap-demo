@@ -14,8 +14,6 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   align-items: center;
   justify-items: center;
-  justify-content: center;
-  align-content: center;
   gap: 12px;
 }
 
@@ -47,4 +45,13 @@
 }
 .Home .Card > p {
   color: black;
+}
+
+@media screen and (max-width: 710px) {
+  .Home .Grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
 }
