@@ -32,3 +32,10 @@
   border-radius: 4px;
   padding: 5px 8px;
 }
+
+.ControlsWrapper {
+  width: 100%;
+}
+
+@media screen and (max-width: 710px) {
+}

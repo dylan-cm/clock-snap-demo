@@ -111,72 +111,75 @@ const ListView = ({ ...props }: ListViewProps) => {
 
   return (
     <div className="ListView">
-      <div className="Controls">
-        Sort By:
-        <select value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value={SORT.DD}>{SORT.DD}</option>
-          <option value={SORT.DA}>{SORT.DA}</option>
-          <option value={SORT.EMP}>{SORT.EMP}</option>
-          <option value={SORT.HRS}>{SORT.HRS}</option>
-          <option value={SORT.PRK}>{SORT.PRK}</option>
-          <option value={SORT.MI}>{SORT.MI}</option>
-        </select>
-        <select
-          value={filters.project?.name || ""}
-          onChange={(e) =>
-            setFilters({
-              ...filters,
-              project: projects.find((p) => p.name === e.target.value),
-            })
-          }
-          style={{
-            backgroundColor: filters.project?.color,
-            color: calculateContrast(filters.project?.color || "#fff"),
-          }}
-        >
-          <option value={""}>All Projects</option>
-          {projects.map((p) => (
-            <option value={p.name} key={p.id}>
-              {p.name}
-            </option>
-          ))}
-        </select>
-        <select
-          value={filters.employee || ""}
-          onChange={(e) => setFilters({ ...filters, employee: e.target.value })}
-        >
-          <option value={""}>All Employees</option>
-          {users.map((u) => (
-            <option value={u} key={u}>
-              {u}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="Controls">
-        <label>From:</label>
-        <input
-          type="date"
-          value={filters.from ? filters.from.toISOString().split("T")[0] : ""}
-          onChange={(e) =>
-            setFilters({
-              ...filters,
-              from: e.target.value ? new Date(e.target.value) : undefined,
-            })
-          }
-        />
-        <label>To:</label>
-        <input
-          type="date"
-          value={filters.to ? filters.to.toISOString().split("T")[0] : ""}
-          onChange={(e) =>
-            setFilters({
-              ...filters,
-              to: e.target.value ? new Date(e.target.value) : undefined,
-            })
-          }
-        />
-        <button onClick={clearFilters}>Clear Filters</button>
+      <div className="ControlsWrapper">
+        <label>Sort By</label>
+        <div className="Controls">
+          <select value={sort} onChange={(e) => setSort(e.target.value)}>
+            <option value={SORT.DD}>{SORT.DD}</option>
+            <option value={SORT.DA}>{SORT.DA}</option>
+            <option value={SORT.EMP}>{SORT.EMP}</option>
+            <option value={SORT.HRS}>{SORT.HRS}</option>
+            <option value={SORT.PRK}>{SORT.PRK}</option>
+            <option value={SORT.MI}>{SORT.MI}</option>
+          </select>
+          <select
+            value={filters.project?.name || ""}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                project: projects.find((p) => p.name === e.target.value),
+              })
+            }
+            style={{
+              backgroundColor: filters.project?.color,
+              color: calculateContrast(filters.project?.color || "#fff"),
+            }}
+          >
+            <option value={""}>All Projects</option>
+            {projects.map((p) => (
+              <option value={p.name} key={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+          <select
+            value={filters.employee || ""}
+            onChange={(e) =>
+              setFilters({ ...filters, employee: e.target.value })
+            }
+          >
+            <option value={""}>All Employees</option>
+            {users.map((u) => (
+              <option value={u} key={u}>
+                {u}
+              </option>
+            ))}
+          </select>
+        </div>
+        <label>From - To</label>
+        <div className="Controls">
+          <input
+            type="date"
+            value={filters.from ? filters.from.toISOString().split("T")[0] : ""}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                from: e.target.value ? new Date(e.target.value) : undefined,
+              })
+            }
+          />
+          <input
+            type="date"
+            value={filters.to ? filters.to.toISOString().split("T")[0] : ""}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                to: e.target.value ? new Date(e.target.value) : undefined,
+              })
+            }
+          />
+          <button onClick={clearFilters}>Clear Filters</button>
+        </div>
       </div>
       <Table logs={filteredLogs} />
     </div>
