@@ -17,7 +17,7 @@ const LogView = ({ ...props }: LogViewProps) => {
 
   useEffect(() => {
     const getLog = async () => {
-      const docSnap = await getDoc(doc(db, "timeLog", logId || ""));
+      const docSnap = await getDoc(doc(db, "demo-timeLog", logId || ""));
       if (docSnap.exists()) {
         const data = docSnap.data();
 
@@ -54,7 +54,7 @@ const LogView = ({ ...props }: LogViewProps) => {
         "Are you sure you want to delete this item? This action cannot be undone!"
       )
     ) {
-      await deleteDoc(doc(db, "timeLog", logData.id));
+      await deleteDoc(doc(db, "demo-timeLog", logData.id));
       await refresh();
       navigate(-1);
     }
@@ -84,7 +84,7 @@ const LogView = ({ ...props }: LogViewProps) => {
           <div className="Row">
             <p>{logData.date.toDateString()}</p>
             <div className="Combine">
-              <h4>{`${logData.time}`}</h4>
+              <h4>{`${Math.round(logData.time * 100) / 100}`}</h4>
               <p>hrs</p>
             </div>
           </div>

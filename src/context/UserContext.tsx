@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signIn = async (email: string, password: string) => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
-      email,
-      password
+      "demo@demo.com",
+      "123demo"
     );
     return userCredential.user;
   };

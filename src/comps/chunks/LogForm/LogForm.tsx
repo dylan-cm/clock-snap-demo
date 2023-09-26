@@ -45,14 +45,14 @@ function LogForm() {
     }
     const fetchOptions = async () => {
       try {
-        const userDoc = await getDoc(doc(db, "people", user.uid));
+        const userDoc = await getDoc(doc(db, "demo-people", user.uid));
 
         if (userDoc.exists()) {
           setUserName(userDoc.data().name);
         } else {
           console.log("No such document!");
         }
-        const projectsCollection = collection(db, "projects");
+        const projectsCollection = collection(db, "demo-projects");
         const projectsSnapshot = await getDocs(projectsCollection);
         const projects = projectsSnapshot.docs.map((doc) => {
           return {
@@ -96,7 +96,7 @@ function LogForm() {
     setSuccess(false);
     //send to firestore
     try {
-      await addDoc(collection(db, "timeLog"), {
+      await addDoc(collection(db, "demo-timeLog"), {
         hour,
         minute,
         time,
@@ -209,7 +209,9 @@ function LogForm() {
           <input
             type="date"
             className="DateSelector"
-            onChange={(e) => setDate(new Date(e.target.value))}
+            onChange={(e) => {
+              setDate(new Date(e.target.value.replace(/-/g, "/")));
+            }}
             value={date ? date.toISOString().split("T")[0] : ""}
           />
         </label>

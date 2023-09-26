@@ -215,7 +215,7 @@ const SummaryView = ({ ...props }: SummaryViewProps) => {
             <div className="ListItemHeader">
               <h3>{month.month}</h3>
               <div className="LabeledValue">
-                <h4>{month.hours}</h4>
+                <h4>{Math.round(month.hours * 100) / 100}</h4>
                 <span>Hours</span>
               </div>
               <div className="LabeledValue">
@@ -227,7 +227,7 @@ const SummaryView = ({ ...props }: SummaryViewProps) => {
                 <span>Parking</span>
               </div>
               <div className="LabeledValue">
-                <h4>{month.designAssistantHours}</h4>
+                <h4>{Math.round(month.designAssistantHours * 100) / 100}</h4>
                 <span>Design Assistant Hours</span>
               </div>
               <div className="LabeledValue">
@@ -240,7 +240,7 @@ const SummaryView = ({ ...props }: SummaryViewProps) => {
                 <div className="ListItemHeader">
                   <h3>{user.name}</h3>
                   <div className="LabeledValue">
-                    <h4>{user.hours}</h4>
+                    <h4>{Math.round(user.hours * 100) / 100}</h4>
                     <span>Hours</span>
                   </div>
                   <div className="LabeledValue">
@@ -252,7 +252,7 @@ const SummaryView = ({ ...props }: SummaryViewProps) => {
                     <span>Parking</span>
                   </div>
                   <div className="LabeledValue">
-                    <h4>{user.designAssistantHours}</h4>
+                    <h4>{Math.round(user.designAssistantHours * 100) / 100}</h4>
                     <span>Design Assistant Hours</span>
                   </div>
                   <div className="LabeledValue">

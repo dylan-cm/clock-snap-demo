@@ -44,7 +44,7 @@ function EditLog() {
     setTime(log.time);
     const hour = Math.floor(log.time);
     setHour(hour);
-    setMinute((log.time - hour) * 60);
+    setMinute(Math.round((log.time - hour) * 60));
     setMileage(log.mileage);
     setParking(log.parking);
     setFormattedParking(formatCurrency(log.parking));
@@ -68,14 +68,14 @@ function EditLog() {
     const fetchOptions = async () => {
       if (!user) return;
       try {
-        const userDoc = await getDoc(doc(db, "people", user.uid));
+        const userDoc = await getDoc(doc(db, "demo-people", user.uid));
 
         if (userDoc.exists()) {
           setUserName(userDoc.data().name);
         } else {
           console.log("No such document!");
         }
-        const projectsCollection = collection(db, "projects");
+        const projectsCollection = collection(db, "demo-projects");
         const projectsSnapshot = await getDocs(projectsCollection);
         const projects = projectsSnapshot.docs.map((doc) => {
           return {
@@ -119,7 +119,7 @@ function EditLog() {
     setSuccess(false);
     //send to firestore
     try {
-      await updateDoc(doc(db, "timeLog", logId), {
+      await updateDoc(doc(db, "demo-timeLog", logId), {
         hour,
         minute,
         time,
@@ -228,7 +228,9 @@ function EditLog() {
           <input
             type="date"
             className="DateSelector"
-            onChange={(e) => setDate(new Date(e.target.value))}
+            onChange={(e) =>
+              setDate(new Date(e.target.value.replace(/-/g, "/")))
+            }
             value={date ? date.toISOString().split("T")[0] : ""}
           />
         </label>

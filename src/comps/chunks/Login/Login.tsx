@@ -52,8 +52,6 @@ function Button(props: AriaButtonProps) {
 }
 
 const Login = ({ ...props }: LoginProps) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
   const navigate = useNavigate();
   const { signIn } = useAuth();
@@ -62,7 +60,7 @@ const Login = ({ ...props }: LoginProps) => {
     // e.preventDefault();
     setErr("");
     try {
-      await signIn(email, password);
+      await signIn("demo@demo.com", "123demo");
       navigate("/");
     } catch (e: any) {
       setErr(e.message);
@@ -82,14 +80,14 @@ const Login = ({ ...props }: LoginProps) => {
           autoComplete="username"
           aria-autocomplete="both"
           autoFocus
-          value={email}
-          onChange={(val) => setEmail(val)}
+          value={"demo@demo.com"}
+          onChange={() => {}}
         />
         <TextField
           label="Password"
           type="password"
-          value={password}
-          onChange={(val) => setPassword(val)}
+          value={"123demo"}
+          onChange={() => {}}
           errorMessage={err}
           name="password"
         />

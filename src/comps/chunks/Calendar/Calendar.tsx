@@ -173,7 +173,7 @@ const DaySquare = ({ ...props }: DaySquareProps) => {
             }}
           >
             <MdOutlineTimer />
-            <span id="logTime">{log.time}</span>
+            <span id="logTime">{Math.round(log.time * 100) / 100}</span>
             <span id="logName">{`${name}`}</span>
           </div>
         );

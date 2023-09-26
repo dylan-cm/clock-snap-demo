@@ -32,9 +32,9 @@ export const DataProvider = ({ children }: DataProviderProps) => {
 
   const refresh = async () => {
     try {
-      const projectSnapshot = await getDocs(collection(db, "projects"));
-      const logSnapshot = await getDocs(collection(db, "timeLog"));
-      const userSnapshot = await getDocs(collection(db, "people"));
+      const projectSnapshot = await getDocs(collection(db, "demo-projects"));
+      const logSnapshot = await getDocs(collection(db, "demo-timeLog"));
+      const userSnapshot = await getDocs(collection(db, "demo-people"));
 
       setProjects(
         projectSnapshot.docs.map((project: DocumentSnapshot) => {

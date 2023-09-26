@@ -17,7 +17,7 @@ const Projects = ({ ...props }: ProjectsProps) => {
 
   const fetchOptions = async () => {
     try {
-      const projectsCollection = collection(db, "projects");
+      const projectsCollection = collection(db, "demo-projects");
       const projectsSnapshot = await getDocs(projectsCollection);
       const fetchedProjects: { name: string; color: string }[] =
         projectsSnapshot.docs.map((doc) => {
@@ -48,7 +48,7 @@ const Projects = ({ ...props }: ProjectsProps) => {
     //send to firestore
     else {
       try {
-        await addDoc(collection(db, "projects"), {
+        await addDoc(collection(db, "demo-projects"), {
           name: newProject.name,
           color: newProject.color,
         });
